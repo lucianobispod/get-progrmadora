@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[Skills] (
+    [UserId] UNIQUEIDENTIFIER NOT NULL,
+    [TagId]  UNIQUEIDENTIFIER NOT NULL,
+    CONSTRAINT [PK_Skills] PRIMARY KEY CLUSTERED ([UserId] ASC, [TagId] ASC),
+    CONSTRAINT [FK_Skills_Tag_TagId] FOREIGN KEY ([TagId]) REFERENCES [dbo].[Tag] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Skills_User_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_Skills_TagId]
+    ON [dbo].[Skills]([TagId] ASC);
+
