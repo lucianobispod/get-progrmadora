@@ -13,7 +13,7 @@ namespace ProgramadoraGet.Domain
 
         public Guid UserId { get; set; }
 
-        public DateTime AcessedAt { get; set; }
+        public DateTime? AcessedAt { get; set; }
 
         #region Navigation
 
