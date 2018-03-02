@@ -56,12 +56,13 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<User>().ToTable(nameof(User));
 
             m.Entity<Comment>().Property(d => d.CreatedAt).ValueGeneratedOnAdd();
-            m.Entity<Comment>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd();
-            m.Entity<Comment>().HasOne(h => h.Question).WithMany(w => w.Comment);
+            m.Entity<Comment>().Property(d => d.UpdatedAt).ValueGeneratedOnAddOrUpdate();
+            m.Entity<Comment>().HasOne(h => h.Question).WithMany(w => w.Comment).OnDelete(DeleteBehavior.Restrict);
             m.Entity<Comment>().HasOne(h => h.User).WithMany(w => w.Comment);
 
+
             m.Entity<Enterprise>().Property(p => p.CreatedAt).ValueGeneratedOnAdd();
-            m.Entity<Enterprise>().Property(p => p.UpdatedAt).ValueGeneratedOnAdd();
+            m.Entity<Enterprise>().Property(p => p.UpdatedAt).ValueGeneratedOnUpdate();
 
             m.Entity<Feedback>().Property(d => d.CreatedAt).ValueGeneratedOnAdd();
             m.Entity<Feedback>().HasOne(h => h.User).WithMany(w => w.Feedback);
@@ -83,15 +84,17 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<QuestionTag>().HasOne(h => h.Question).WithMany(w => w.QuestionTag);
 
             m.Entity<Notification>().Property(d => d.CreatedAt).ValueGeneratedOnAdd();
-            m.Entity<Notification>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd();
+            m.Entity<Notification>().Property(d => d.UpdatedAt).ValueGeneratedOnAddOrUpdate();
             m.Entity<Notification>().HasOne(d => d.User).WithMany(w => w.Notification);
 
             m.Entity<Question>().Property(d => d.CreatedAt).ValueGeneratedOnAdd();
-            m.Entity<Question>().Property(d => d.CreatedAt).ValueGeneratedOnAdd();
+            m.Entity<Question>().Property(d => d.UpdatedAt).ValueGeneratedOnAddOrUpdate();
             m.Entity<Question>().HasOne(h => h.User).WithMany(w => w.Question);
+            m.Entity<Question>().HasMany(h => h.Comment).WithOne(w => w.Question);
+
 
             m.Entity<User>().Property(d => d.CreatedAt).ValueGeneratedOnAdd();
-            m.Entity<User>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd();
+            m.Entity<User>().Property(d => d.UpdatedAt).ValueGeneratedOnAddOrUpdate();
 
             m.Entity<RecoveryPassword>().HasOne(d => d.User).WithMany(w => w.RecoveryPassword);
 
