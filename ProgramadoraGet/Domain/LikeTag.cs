@@ -15,9 +15,9 @@ namespace ProgramadoraGet.Domain
 
         #region Navigation
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
-        public Tag Täg { get; set; }
+        public virtual Tag Tag { get; set; }
 
         #endregion
     }

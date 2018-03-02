@@ -66,7 +66,7 @@ namespace ProgramadoraGet.Domain
 
         #region Navigation
 
-        public ICollection<Match> Match { get; set; }
+        public virtual ICollection<Match> Match { get; set; }
 
         #endregion
     }

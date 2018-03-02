@@ -24,9 +24,9 @@ namespace ProgramadoraGet.Domain
 
         #region Navigation
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
-        public Question Question { get; set; }
+        public virtual Question Question { get; set; }
 
         #endregion
     }

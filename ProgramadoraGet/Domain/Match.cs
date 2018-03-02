@@ -15,9 +15,9 @@ namespace ProgramadoraGet.Domain
 
         #region Navigation
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
-        public Enterprise Enterprise { get; set; }
+        public virtual Enterprise Enterprise { get; set; }
 
         #endregion
     }

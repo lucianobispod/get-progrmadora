@@ -15,9 +15,9 @@ namespace ProgramadoraGet.Domain
 
         #region Navigation
 
-        public Question Question { get; set; }
+        public virtual Question Question { get; set; }
 
-        public Tag Tag { get; set; }
+        public virtual Tag Tag { get; set; }
         #endregion
 
     }
