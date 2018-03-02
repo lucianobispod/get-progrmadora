@@ -7,8 +7,6 @@ namespace ProgramadoraGet.Domain
 {
     public class Skills
     {
-        public Guid Id { get; set; }
-
         public Guid UserId { get; set; }
 
         public Guid TagId { get; set; }

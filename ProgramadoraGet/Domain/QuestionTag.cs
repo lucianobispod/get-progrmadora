@@ -7,7 +7,6 @@ namespace ProgramadoraGet.Domain
 {
     public class QuestionTag
     {
-        public Guid Id { get; set; }
 
         public Guid QuestionId { get; set; }
 

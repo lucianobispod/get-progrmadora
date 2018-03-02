@@ -7,8 +7,6 @@ namespace ProgramadoraGet.Domain
 {
     public class Match
     {
-        public Guid Id { get; set; }
-
         public Guid UserId { get; set; }
 
         public Guid EnterpriseId { get; set; }
