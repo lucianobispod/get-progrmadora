@@ -21,11 +21,11 @@ namespace ProgramadoraGet.Domain
 
         public  string PhoneNumber { get; set; }
 
-        public virtual string Email { get; set; }
+        public string Email { get; set; }
 
-        public virtual bool EmailConfirmed { get; set; }
+        public bool EmailConfirmed { get; set; }
 
-        public virtual string PasswordHash { get; set; }
+        public string PasswordHash { get; set; }
 
         public string PasswordSalt { get; set; }
 
@@ -37,6 +37,9 @@ namespace ProgramadoraGet.Domain
 
         public DateTime? DeletedAt { get; set; }
 
+        public string State { get; set; }
+
+        public string Location { get; set; }
 
         public bool IsPasswordEqualsTo(string password)
         {
