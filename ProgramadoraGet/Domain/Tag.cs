@@ -13,6 +13,7 @@ namespace ProgramadoraGet.Domain
 
         public DateTime? DeletedAt { get; set; }
 
+        public DateTime CreatedAt { get; set; }
 
         #region Navigation
 
