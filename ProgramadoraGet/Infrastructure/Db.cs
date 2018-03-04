@@ -56,8 +56,8 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<User>().ToTable(nameof(User));
 
             m.Entity<Comment>().Property(d => d.CommentText).HasMaxLength(200);
-            m.Entity<Comment>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
-            m.Entity<Comment>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<Comment>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            m.Entity<Comment>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Comment>().Property(d => d.QuestionId).IsRequired();
             m.Entity<Comment>().Property(d => d.CommentText).IsRequired();
             m.Entity<Comment>().HasOne(h => h.Question).WithMany(w => w.Comment).OnDelete(DeleteBehavior.Restrict);
@@ -68,8 +68,8 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Enterprise>().Property(d => d.PhoneNumber).HasMaxLength(14);
             m.Entity<Enterprise>().Property(d => d.State).HasMaxLength(2);
             m.Entity<Enterprise>().Property(d => d.Location).HasMaxLength(50);
-            m.Entity<Enterprise>().Property(p => p.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
-            m.Entity<Enterprise>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<Enterprise>().Property(p => p.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            m.Entity<Enterprise>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Enterprise>().HasIndex(p => p.Email).IsUnique();
             m.Entity<Enterprise>().HasIndex(p => p.Name).IsUnique();
             m.Entity<Enterprise>().Property(d => d.Email).IsRequired();
@@ -78,7 +78,7 @@ namespace ProgramadoraGet.Infrastructure
 
             m.Entity<Feedback>().Property(d => d.Content).IsRequired();
             m.Entity<Feedback>().Property(d => d.Title).IsRequired();
-            m.Entity<Feedback>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<Feedback>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Feedback>().HasOne(h => h.User).WithMany(w => w.Feedback);
             m.Entity<Feedback>().Property(d => d.Content).HasMaxLength(200);
             m.Entity<Feedback>().Property(d => d.Title).HasMaxLength(100);
@@ -91,16 +91,16 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Match>().HasOne(h => h.Enterprise).WithMany(w => w.Match);
             m.Entity<Match>().HasKey(s => new { s.UserId, s.EnterpriseId }).ForSqlServerIsClustered(true);
 
-            m.Entity<Notification>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
-            m.Entity<Notification>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<Notification>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            m.Entity<Notification>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Notification>().Property(d => d.Title).IsRequired();
             m.Entity<Notification>().Property(d => d.Link).IsRequired();
 
             m.Entity<Notification>().HasOne(d => d.User).WithMany(w => w.Notification);
             m.Entity<Notification>().Property(d => d.Title).HasMaxLength(150);
 
-            m.Entity<Question>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
-            m.Entity<Question>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<Question>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            m.Entity<Question>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Question>().HasOne(h => h.User).WithMany(w => w.Question);
             m.Entity<Question>().HasMany(h => h.Comment).WithOne(w => w.Question);
             m.Entity<Question>().Property(d => d.Content).IsRequired();
@@ -112,18 +112,18 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<QuestionTag>().HasOne(h => h.Question).WithMany(w => w.QuestionTag);
 
             m.Entity<RecoveryPassword>().HasOne(d => d.User).WithMany(w => w.RecoveryPassword);
-            m.Entity<RecoveryPassword>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<RecoveryPassword>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
 
             m.Entity<Skills>().HasKey(s => new { s.UserId, s.TagId }).ForSqlServerIsClustered(true);
             m.Entity<Skills>().HasOne(h => h.User).WithMany(w => w.Skills);
             m.Entity<Skills>().HasOne(h => h.Tag).WithMany(w => w.Skills);
 
-            m.Entity<Tag>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<Tag>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Tag>().Property(p => p.Name).IsRequired();
             m.Entity<Tag>().Property(d => d.Name).HasMaxLength(100);
 
-            m.Entity<User>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
-            m.Entity<User>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValue(DateTime.Now);
+            m.Entity<User>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            m.Entity<User>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<User>().HasIndex(e => e.Email).IsUnique();
             m.Entity<User>().Property(e => e.Email).IsRequired();
             m.Entity<User>().Property(e => e.Name).IsRequired();
