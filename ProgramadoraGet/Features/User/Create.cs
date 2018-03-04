@@ -15,6 +15,8 @@ namespace ProgramadoraGet.Features.User
         {
             public string Name { get; set; }
 
+            public string LastName { get; set; }
+
             public string Description { get; set; }
 
             public string Email { get; set; }
@@ -33,8 +35,9 @@ namespace ProgramadoraGet.Features.User
             {
                 RuleFor(validate => validate.Email).Length(20, 100).EmailAddress();
                 RuleFor(validate => validate.Password).Length(8, 20);
+                RuleFor(validate => validate.LastName).NotEmpty().Length(5, 50);
                 RuleFor(validate => validate.Description).MaximumLength(100);
-                RuleFor(validate => validate.Name).Length(8, 150).NotEmpty();
+                RuleFor(validate => validate.Name).Length(3, 50).NotEmpty();
             }
         }
 
@@ -58,10 +61,12 @@ namespace ProgramadoraGet.Features.User
                 var user = new Domain.User
                 {
                     Name = request.Name,
+                    LastName = request.LastName,
                     Description = request.Description,
                     Email = request.Email,
                     State = request.State,
                     Location = request.Location
+
                 };
 
                 user.SetPassword(request.Password);
@@ -74,6 +79,7 @@ namespace ProgramadoraGet.Features.User
                 {
                     Id = user.Id,
                     Name = user.Name,
+                    LastName = user.LastName,
                     Description = user.Description,
                     Email = user.Email,
                     Location = user.Location,
