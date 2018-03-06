@@ -21,7 +21,7 @@ namespace ProgramadoraGet.Features.User
         }
 
         [HttpPost]
-        public async Task<Create.Response> Create([FromBody] Create.Request request)
+        public async Task<Create.Response> Create([FromBody] Create.Command request)
         {
            return await mediator.Send(request);
         }

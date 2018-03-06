@@ -11,7 +11,7 @@ namespace ProgramadoraGet.Features.User
 {
     public class Create
     {
-        public class Request : IRequest<Response>
+        public class Command : IRequest<Response>
         {
             public string Name { get; set; }
 
@@ -29,7 +29,7 @@ namespace ProgramadoraGet.Features.User
         }
 
 
-        public class Validator : AbstractValidator<Request>
+        public class Validator : AbstractValidator<Command>
         {
             public Validator()
             {
@@ -45,7 +45,7 @@ namespace ProgramadoraGet.Features.User
         {
         }
 
-        public class Handler : AsyncRequestHandler<Request, Response>
+        public class Handler : AsyncRequestHandler<Command, Response>
         {
             private readonly Db db;
 
@@ -54,7 +54,7 @@ namespace ProgramadoraGet.Features.User
                 this.db = db;
             }
 
-            protected override async Task<Response> HandleCore(Request request)
+            protected override async Task<Response> HandleCore(Command request)
             {
                 if (await db.Users.SingleOrDefaultAsync(s => s.Email == request.Email) != null) throw new Exception();
 
