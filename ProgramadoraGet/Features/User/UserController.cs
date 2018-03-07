@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProgramadoraGet.Infrastructure;
+using ProgramadoraGet.Utils;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,14 +18,24 @@ namespace ProgramadoraGet.Features.User
         private IMediator mediator;
 
         public UserController(IMediator mediator)
-        {
+        {   
             this.mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<Create.Response> Create([FromBody] Create.Command request)
+        public async Task<ApiResponse<Create.Response>> Create([FromBody] Create.Command request)
         {
-           return await mediator.Send(request);
+            var response = new ApiResponse<Create.Response>();
+            if (!ModelState.IsValid)
+            {
+                response.erros = ErrorMessagesHelper.GetErrors(ModelState);
+                return response;
+            }
+
+            var serviceResponse = await mediator.Send(request);
+            response.data = serviceResponse;
+
+            return response;
         }
 
         [HttpGet]
