@@ -12,7 +12,7 @@ namespace ProgramadoraGet.Features.User
 {
     public class Create
     {
-        public class Command : IRequest<Response>
+        public class Model
         {
             public string Name { get; set; }
 
@@ -27,70 +27,68 @@ namespace ProgramadoraGet.Features.User
             public string State { get; set; }
 
             public string Location { get; set; }
+
         }
 
-
-        public class Validator : AbstractValidator<Command>
+        public class Validator : AbstractValidator<Model>
         {
             public Validator()
             {
                 RuleFor(validate => validate.Email)
                     .Length(20, 100).WithMessage("Email deve conter de 20 a 100 caracteres")
                     .EmailAddress().WithMessage("Email inválido");
-                RuleFor(validate => validate.Password).Length(8, 20);
-                RuleFor(validate => validate.LastName).NotEmpty().Length(5, 50);
-                RuleFor(validate => validate.Description).MaximumLength(100);
-                RuleFor(validate => validate.Name).Length(3, 50).NotEmpty();
+
+                RuleFor(validate => validate.Password)
+                    .Length(8, 20);
+
+                RuleFor(validate => validate.LastName)
+                    .NotEmpty()
+                    .Length(5, 50);
+
+                RuleFor(validate => validate.Description)
+                    .MaximumLength(100);
+
+                RuleFor(validate => validate.Name)
+                    .Length(3, 50)
+                    .NotEmpty();
             }
         }
 
-        public class Response : Domain.User
+        public class Services
         {
-        }
 
-        public class Handler : AsyncRequestHandler<Command, Response>
-        {
             private readonly Db db;
 
-            public Handler(Db db)
+            public Services(Db db)
             {
                 this.db = db;
             }
 
-            protected override async Task<Response> HandleCore(Command request)
+            public async Task<Domain.User> Save(Model model)
             {
-                if (await db.Users.SingleOrDefaultAsync(s => s.Email == request.Email) != null) throw new Exception();
+
+                if (await db.Users.SingleOrDefaultAsync(s => s.Email == model.Email) != null) throw new Exception();
 
                 var user = new Domain.User
                 {
-                    Name = request.Name,
-                    LastName = request.LastName,
-                    Description = request.Description,
-                    Email = request.Email,
-                    State = request.State,
-                    Location = request.Location
-
+                    Name = model.Name,
+                    LastName = model.LastName,
+                    Description = model.Description,
+                    Email = model.Email,
+                    State = model.State,
+                    Location = model.Location,
                 };
 
-                user.SetPassword(request.Password);
+                user.SetPassword(model.Password);
 
                 db.Users.Add(user);
 
                 await db.SaveChangesAsync();
 
-                return new Response
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    LastName = user.LastName,
-                    Description = user.Description,
-                    Email = user.Email,
-                    Location = user.Location,
-                    State = user.State,
-                    CreatedAt = user.CreatedAt,
-                    UpdatedAt = user.UpdatedAt
-                };
+                return user;
+
             }
+
         }
 
 
