@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ProgramadoraGet.Infrastructure;
+using ProgramadoraGet.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,9 @@ namespace ProgramadoraGet.Features.User
         {
             public Validator()
             {
-                RuleFor(validate => validate.Email).Length(20, 100).EmailAddress();
+                RuleFor(validate => validate.Email)
+                    .Length(20, 100).WithMessage("Email deve conter de 20 a 100 caracteres")
+                    .EmailAddress().WithMessage("Email inválido");
                 RuleFor(validate => validate.Password).Length(8, 20);
                 RuleFor(validate => validate.LastName).NotEmpty().Length(5, 50);
                 RuleFor(validate => validate.Description).MaximumLength(100);
