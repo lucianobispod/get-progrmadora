@@ -6,7 +6,7 @@ using static ProgramadoraGet.Utils.ErrorMessagesHelper;
 
 namespace ProgramadoraGet.Infrastructure
 {
-    public class ApiResponse<T>
+    public class DefaultResponse<T>
     {
         public T data;
         public List<ErrorMessage> erros;
