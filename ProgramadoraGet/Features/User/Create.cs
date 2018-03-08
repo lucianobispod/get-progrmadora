@@ -12,21 +12,15 @@ namespace ProgramadoraGet.Features.User
 {
     public class Create
     {
-        public class Model
+        public class Model 
         {
             public string Name { get; set; }
 
             public string LastName { get; set; }
 
-            public string Description { get; set; }
-
             public string Email { get; set; }
 
             public string Password { get; set; }
-
-            public string State { get; set; }
-
-            public string Location { get; set; }
 
         }
 
@@ -39,18 +33,16 @@ namespace ProgramadoraGet.Features.User
                     .EmailAddress().WithMessage("Email inválido");
 
                 RuleFor(validate => validate.Password)
-                    .Length(8, 20);
+                    .Length(8, 20).WithMessage("A senha deve conter entre 8 e 20 caracteres")
+                    .NotEmpty().WithMessage("A senha não pode ser vazia");
 
                 RuleFor(validate => validate.LastName)
-                    .NotEmpty()
-                    .Length(5, 50);
-
-                RuleFor(validate => validate.Description)
-                    .MaximumLength(100);
+                    .NotEmpty().WithMessage("O Sobrenome não pode ser vazio")
+                    .MaximumLength(50).WithMessage("Limite de caracter ultrapassado");
 
                 RuleFor(validate => validate.Name)
-                    .Length(3, 50)
-                    .NotEmpty();
+                    .Length(3, 50).WithMessage("Campo nome precisa conter entre 3 e 50 caracteres")
+                    .NotEmpty().WithMessage("O Nome não pode ser vazio");
             }
         }
 
@@ -64,6 +56,7 @@ namespace ProgramadoraGet.Features.User
                 this.db = db;
             }
 
+
             public async Task<Domain.User> Save(Model model)
             {
 
@@ -73,10 +66,7 @@ namespace ProgramadoraGet.Features.User
                 {
                     Name = model.Name,
                     LastName = model.LastName,
-                    Description = model.Description,
-                    Email = model.Email,
-                    State = model.State,
-                    Location = model.Location,
+                    Email = model.Email
                 };
 
                 user.SetPassword(model.Password);
@@ -85,7 +75,7 @@ namespace ProgramadoraGet.Features.User
 
                 await db.SaveChangesAsync();
 
-                return user;
+                return new Domain.User { Id = user.Id, Name = user.Name, LastName = user.LastName, Email = user.Email };
 
             }
 
