@@ -15,33 +15,35 @@ namespace ProgramadoraGet.Features.User
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private IMediator mediator;
+        private Db db;
 
-        public UserController(IMediator mediator)
-        {   
-            this.mediator = mediator;
+        public UserController(Db db)
+        {
+            this.db = db;
         }
 
         [HttpPost]
-        public async Task<ApiResponse<Create.Response>> Create([FromBody] Create.Command request)
+        public async Task<DefaultResponse<Domain.User>> Create([FromBody] Create.Model model)
         {
-            var response = new ApiResponse<Create.Response>();
+            var response = new DefaultResponse<Domain.User>();
+
             if (!ModelState.IsValid)
             {
                 response.erros = ErrorMessagesHelper.GetErrors(ModelState);
                 return response;
             }
 
-            var serviceResponse = await mediator.Send(request);
-            response.data = serviceResponse;
+            var services = new Create.Services(db);
+
+            response.data = await services.Save(model);
 
             return response;
         }
 
         [HttpGet]
-        public async Task<IList<ListAll.Response>> ListAll(ListAll.Request request)
+        public async Task<IList<Domain.User>> ReadAll()
         {
-            return await mediator.Send(request);
+            return await new Read.Services(db).All();
         }
     }
 }
