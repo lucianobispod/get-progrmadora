@@ -12,6 +12,13 @@ namespace ProgramadoraGet.Features.User
     public class Read
     {
 
+        public class Model
+        {
+            public Guid Id { get; set; }
+
+            public string Filter { get; set; }
+        }
+
         public class Services 
         {
             private Db db;
@@ -51,6 +58,41 @@ namespace ProgramadoraGet.Features.User
 
                      }).ToListAsync();
             }
+
+            public async Task<IList<Domain.User>> One(Model model)
+            {
+                if (model.Id == null) throw new Exception(); 
+
+                return await db.Users
+                     .Where(w => w.DeletedAt == null)
+                     .Where(w => w.Id == model.Id)
+                     .Include(include => include.Skills)
+                     .ThenInclude(include => include.Tag)
+                     .Select(user => new Domain.User
+                     {
+                         Id = user.Id,
+                         Name = user.Name,
+                         LastName = user.LastName,
+                         Description = user.Description,
+                         Email = user.Email,
+                         Location = user.Location,
+                         State = user.State,
+                         PhoneNumber = user.PhoneNumber,
+                         Picture = user.Picture,
+                         CreatedAt = user.CreatedAt,
+                         UpdatedAt = user.UpdatedAt,
+                         Skills = user.Skills.Where(w => w.Tag.DeletedAt == null).Select(skills => new Skills
+                         {
+                             Tag = new Tag
+                             {
+                                 Id = skills.Tag.Id,
+                                 Name = skills.Tag.Name,
+                             }
+                         }).ToList()
+
+                     }).ToListAsync();
+            }
+
         }
 
     }
