@@ -22,7 +22,7 @@ namespace ProgramadoraGet.Features.Feedback
         [HttpPost]
         public async Task<Domain.Feedback> Create([FromBody] Create.Model model)
         {
-            return await new Create.Services(db).Save(model));
+            return await new Create.Services(db).Save(model);
         }
 
         //[HttpGet]

@@ -5,20 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProgramadoraGet.Features.User
+namespace ProgramadoraGet.Features.Enterprise
 {
     public class Update
     {
-
         public class Model
         {
             public Guid Id { get; set; }
 
             public string Name { get; set; }
-
-            public string LastName { get; set; }
-
-            public string Description { get; set; }
 
             public string Email { get; set; }
 
@@ -33,7 +28,6 @@ namespace ProgramadoraGet.Features.User
             public string PhoneNumber { get; set; }
 
             public string Picture { get; set; }
-
         }
 
         public class Validator : AbstractValidator<Model>
@@ -41,25 +35,18 @@ namespace ProgramadoraGet.Features.User
             public Validator()
             {
                 RuleFor(validate => validate.Email)
-                       .Length(20, 100).WithMessage("Email deve conter de 20 a 100 caracteres")
-                       .EmailAddress().WithMessage("Email inválido");
+                                       .Length(20, 100).WithMessage("Email deve conter de 20 a 100 caracteres")
+                                       .EmailAddress().WithMessage("Email inválido");
 
                 RuleFor(validate => validate.NewPassword)
-                    .Length(8, 20);
+                    .Length(8, 20).WithMessage("A nova senha deve conter de 8 a 20 caracteres");
 
                 RuleFor(validate => validate.CurrentPassword)
-                    .Length(8, 20);
-
-                RuleFor(validate => validate.LastName)
-                    .NotEmpty()
-                    .Length(5, 50);
-
-                RuleFor(validate => validate.Description)
-                    .MaximumLength(100);
+                    .Length(8, 20).WithMessage("A senha deve conter de 8 a 20 caracteres"); ;
 
                 RuleFor(validate => validate.Name)
-                    .Length(3, 50)
-                    .NotEmpty();
+                    .Length(3, 50).WithMessage("Nome deve conter de 3 a 50 caracteres")
+                    .NotEmpty().WithMessage("O nome não pode ser nulo");
 
                 RuleFor(validate => validate.PhoneNumber)
                    .MaximumLength(14).WithMessage("Limite caracteres ultrapassado")
@@ -72,9 +59,6 @@ namespace ProgramadoraGet.Features.User
                 RuleFor(validate => validate.State)
                     .NotEmpty().WithMessage("O estado não pode ser vazio")
                     .MaximumLength(2).WithMessage("Limite de caracteres ultrapassado");
-
-                RuleFor(validate => validate.Description)
-                    .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
             }
         }
 
@@ -87,56 +71,55 @@ namespace ProgramadoraGet.Features.User
                 this.db = db;
             }
 
-
-            public async Task<Domain.User> Save(Model model)
+            public async Task<Domain.Enterprise> Save(Model model)
             {
-                var user = await db.Users.FindAsync(model.Id);
+                var enterprise = await db.Enterprises.FindAsync(model.Id);
 
-                if (user == null) throw new Exception();
+                if (enterprise == null) throw new Exception();
 
 
                 if (model.Name != null)
-                    user.Name = model.Name;
-
-
-                if (model.LastName != null)
-                    user.LastName = model.LastName;
-
-
-                if (model.Description != null)
-                    user.Description = model.Description;
-
+                    enterprise.Name = model.Name;
+                
 
                 if (model.Location != null)
-                    user.Location = model.Location;
+                    enterprise.Location = model.Location;
 
 
                 if (model.State != null)
-                    user.State = model.State;
+                    enterprise.State = model.State;
 
 
                 if (model.PhoneNumber != null)
-                    user.PhoneNumber = model.PhoneNumber;
+                    enterprise.PhoneNumber = model.PhoneNumber;
 
 
                 if (model.Picture != null)
-                    user.Picture = model.Picture;
+                    enterprise.Picture = model.Picture;
 
 
                 if (model.Email != null)
-                    user.Email = model.Email;
+                    enterprise.Email = model.Email;
 
 
                 if (model.CurrentPassword != null && model.NewPassword != null)
 
-                    if (!user.IsPasswordEqualsTo(model.CurrentPassword)) throw new Exception();
-                    else user.SetPassword(model.NewPassword);
+                    if (!enterprise.IsPasswordEqualsTo(model.CurrentPassword))
+                        throw new Exception();
+                    else
+                        enterprise.SetPassword(model.NewPassword);
 
+                enterprise.UpdatedAt = DateTime.Now;
 
                 await db.SaveChangesAsync();
 
-                return user;
+                return enterprise;
             }
+
         }
+
+
     }
+
+
 }
