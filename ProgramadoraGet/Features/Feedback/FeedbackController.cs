@@ -22,15 +22,15 @@ namespace ProgramadoraGet.Features.Feedback
         [HttpPost]
         public async Task<Domain.Feedback> Create([FromBody] Create.Model model)
         {
-            return await new Create.Services(db).Save(model));
+            return await new Create.Services(db).Save(model);
         }
 
-        //[HttpGet]
-        //public async Task<IList<>> List()
-        //{
-        //    return await mediator.Send(new List.Query());
+        [HttpGet]
+        public async Task<IList<Domain.Feedback>> List()
+        {
+            return await new Read.Services(db).All();
 
-        //}
+        }
 
     }
 }
