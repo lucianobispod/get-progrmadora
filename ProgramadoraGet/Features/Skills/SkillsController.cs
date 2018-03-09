@@ -7,30 +7,31 @@ using ProgramadoraGet.Infrastructure;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace ProgramadoraGet.Features.Feedback
+namespace ProgramadoraGet.Features.Skills
 {
     [Route("api/[controller]")]
-    public class FeedbackController : Controller
+    public class SkillsController : Controller
     {
-        private readonly Db db;
+        private Db db;
 
-        public FeedbackController(Db db)
+        public SkillsController(Db db)
         {
             this.db = db;
         }
 
         [HttpPost]
-        public async Task<Domain.Feedback> Create([FromBody] Create.Model model)
+        public async Task<Domain.Skills> Create([FromBody] Create.Model model)
         {
             return await new Create.Services(db).Save(model);
         }
 
-        [HttpGet]
-        public async Task<IList<Domain.Feedback>> List()
-        {
-            return await new Read.Services(db).All();
 
+        [HttpDelete]
+        public async Task Delete([FromBody] Delete.Model model)
+        {
+            await new Delete.Services(db).Trash(model);
         }
+
 
     }
 }
