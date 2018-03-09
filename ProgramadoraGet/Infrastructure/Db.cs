@@ -60,8 +60,8 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Comment>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Comment>().Property(d => d.QuestionId).IsRequired();
             m.Entity<Comment>().Property(d => d.CommentText).IsRequired();
-            m.Entity<Comment>().HasOne(h => h.Question).WithMany(w => w.Comment).OnDelete(DeleteBehavior.Restrict);
-            m.Entity<Comment>().HasOne(h => h.User).WithMany(w => w.Comment);
+            m.Entity<Comment>().HasOne(h => h.Question).WithMany(w => w.Comment).OnDelete(DeleteBehavior.Restrict).HasForeignKey(f => f.QuestionId);
+            m.Entity<Comment>().HasOne(h => h.User).WithMany(w => w.Comment).HasForeignKey(f => f.UserId);
 
             m.Entity<Enterprise>().Property(d => d.Name).HasMaxLength(200);
             m.Entity<Enterprise>().Property(d => d.Email).HasMaxLength(100);
@@ -84,11 +84,11 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Feedback>().Property(d => d.Title).HasMaxLength(100);
 
             m.Entity<LikeTag>().HasKey(s => new { s.UserId, s.TagId }).ForSqlServerIsClustered(true);
-            m.Entity<LikeTag>().HasOne(h => h.User).WithMany(w => w.LikeTag);
-            m.Entity<LikeTag>().HasOne(h => h.Tag).WithMany(w => w.LikeTag);
+            m.Entity<LikeTag>().HasOne(h => h.User).WithMany(w => w.LikeTag).HasForeignKey(f => f.UserId);
+            m.Entity<LikeTag>().HasOne(h => h.Tag).WithMany(w => w.LikeTag).HasForeignKey(f => f.TagId);
 
-            m.Entity<Match>().HasOne(h => h.User).WithMany(w => w.Match);
-            m.Entity<Match>().HasOne(h => h.Enterprise).WithMany(w => w.Match);
+            m.Entity<Match>().HasOne(h => h.User).WithMany(w => w.Match).HasForeignKey(f => f.UserId);
+            m.Entity<Match>().HasOne(h => h.Enterprise).WithMany(w => w.Match).HasForeignKey(f => f.EnterpriseId);
             m.Entity<Match>().HasKey(s => new { s.UserId, s.EnterpriseId }).ForSqlServerIsClustered(true);
 
             m.Entity<Notification>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
@@ -108,15 +108,15 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Question>().Property(d => d.Title).HasMaxLength(150);
 
             m.Entity<QuestionTag>().HasKey(s => new { s.QuestionId, s.TagId }).ForSqlServerIsClustered(true);
-            m.Entity<QuestionTag>().HasOne(h => h.Tag).WithMany(w => w.QuestionTag);
-            m.Entity<QuestionTag>().HasOne(h => h.Question).WithMany(w => w.QuestionTag);
+            m.Entity<QuestionTag>().HasOne(h => h.Tag).WithMany(w => w.QuestionTag).HasForeignKey(f => f.TagId);
+            m.Entity<QuestionTag>().HasOne(h => h.Question).WithMany(w => w.QuestionTag).HasForeignKey(f => f.QuestionId);
 
             m.Entity<RecoveryPassword>().HasOne(d => d.User).WithMany(w => w.RecoveryPassword);
             m.Entity<RecoveryPassword>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
 
             m.Entity<Skills>().HasKey(s => new { s.UserId, s.TagId }).ForSqlServerIsClustered(true);
-            m.Entity<Skills>().HasOne(h => h.User).WithMany(w => w.Skills);
-            m.Entity<Skills>().HasOne(h => h.Tag).WithMany(w => w.Skills);
+            m.Entity<Skills>().HasOne(h => h.User).WithMany(w => w.Skills).HasForeignKey(f => f.UserId);
+            m.Entity<Skills>().HasOne(h => h.Tag).WithMany(w => w.Skills).HasForeignKey(f => f.TagId);
 
             m.Entity<Tag>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<Tag>().Property(p => p.Name).IsRequired();
