@@ -32,7 +32,7 @@ namespace ProgramadoraGet.Features.User
                 this.db = db;
             }
 
-            public async void Trash(Model model)
+            public async Task<DateTime?> Trash(Model model)
             {
                 var user = await db.Users.FindAsync(model.Id);
                 
@@ -41,6 +41,8 @@ namespace ProgramadoraGet.Features.User
                 user.DeletedAt = DateTime.Now;
 
                 await db.SaveChangesAsync();
+                
+                return user.DeletedAt;
             }
 
         }
