@@ -45,5 +45,20 @@ namespace ProgramadoraGet.Features.User
         {
             return await new Read.Services(db).All();
         }
+
+        [HttpGet]
+        [Route("{Id}")]
+        public async Task<IList<Domain.User>> ReadOne(Read.Model model)
+        {
+            return await new Read.Services(db).One(model);
+        }
+
+        [HttpDelete]
+        [Route("{Id}")]
+        public async Task<DateTime?> Delete(Delete.Model model)
+        {
+            return await new Delete.Services(db).Trash(model);
+        }
+
     }
 }
