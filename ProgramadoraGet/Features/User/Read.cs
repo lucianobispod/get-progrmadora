@@ -16,10 +16,9 @@ namespace ProgramadoraGet.Features.User
         {
             public Guid Id { get; set; }
 
-            public string Filter { get; set; }
         }
 
-        public class Services 
+        public class Services
         {
             private Db db;
 
@@ -47,9 +46,9 @@ namespace ProgramadoraGet.Features.User
                          Picture = user.Picture,
                          CreatedAt = user.CreatedAt,
                          UpdatedAt = user.UpdatedAt,
-                         Skills = user.Skills.Where(w => w.Tag.DeletedAt == null).Select(skills => new Skills
+                         Skills = user.Skills.Where(w => w.Tag.DeletedAt == null).Select(skills => new Domain.Skills
                          {
-                             Tag = new Tag
+                             Tag = new Domain.Tag
                              {
                                  Id = skills.Tag.Id,
                                  Name = skills.Tag.Name,
@@ -61,7 +60,7 @@ namespace ProgramadoraGet.Features.User
 
             public async Task<IList<Domain.User>> One(Model model)
             {
-                if (model.Id == null) throw new Exception(); 
+                if (model.Id == null) throw new Exception();
 
                 return await db.Users
                      .Where(w => w.DeletedAt == null)
@@ -81,12 +80,13 @@ namespace ProgramadoraGet.Features.User
                          Picture = user.Picture,
                          CreatedAt = user.CreatedAt,
                          UpdatedAt = user.UpdatedAt,
-                         Skills = user.Skills.Where(w => w.Tag.DeletedAt == null).Select(skills => new Skills
+                         Skills = user.Skills.Where(w => w.Tag.DeletedAt == null).Select(skills => new Domain.Skills
                          {
-                             Tag = new Tag
+                             Tag = new Domain.Tag
                              {
                                  Id = skills.Tag.Id,
                                  Name = skills.Tag.Name,
+                                 TagType = skills.Tag.TagType
                              }
                          }).ToList()
 
