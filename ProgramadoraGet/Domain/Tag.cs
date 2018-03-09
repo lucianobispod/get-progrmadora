@@ -11,6 +11,8 @@ namespace ProgramadoraGet.Domain
 
         public string Name { get; set; }
 
+        public TagType TagType { get; set; }
+
         public DateTime? DeletedAt { get; set; }
 
         public DateTime CreatedAt { get; set; }
@@ -25,5 +27,12 @@ namespace ProgramadoraGet.Domain
 
         #endregion
 
+    }
+
+    public enum TagType : int
+    {
+        Normal = 0,
+        Technology = 1,
+        Tool = 2,
     }
 }
