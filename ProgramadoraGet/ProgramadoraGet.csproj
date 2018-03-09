@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Skills\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
