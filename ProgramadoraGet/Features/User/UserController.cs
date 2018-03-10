@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
 using ProgramadoraGet.Utils;
@@ -39,10 +41,11 @@ namespace ProgramadoraGet.Features.User
 
             return response;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IList<Domain.User>> ReadAll()
         {
+            var username = User.Claims.Where(c=> c.Type == ClaimTypes.Name).FirstOrDefault().Value;
             return await new Read.Services(db).All();
         }
 
