@@ -49,7 +49,7 @@ namespace ProgramadoraGet.Features.Enterprise
 
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{Id}")]
         public async Task<DefaultResponse<IList<Domain.Enterprise>>> ReadOne(Read.Model model)
         {
             var response = new DefaultResponse<IList<Domain.Enterprise>> ();
@@ -66,7 +66,7 @@ namespace ProgramadoraGet.Features.Enterprise
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{Id}")]
         public async Task<DefaultResponse<Domain.Enterprise>> Update(Guid id, [FromBody]Update.Model model)
         {
             model.Id = id;
@@ -85,7 +85,7 @@ namespace ProgramadoraGet.Features.Enterprise
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{Id}")]
         public async Task<DefaultResponse<DateTime?>> Delete(Delete.Model model)
         {
             var response = new DefaultResponse<DateTime?>();
