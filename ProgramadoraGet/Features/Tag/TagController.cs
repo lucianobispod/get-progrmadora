@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
 using ProgramadoraGet.Utils;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace ProgramadoraGet.Features.Tag
 {
     [Route("api/[controller]")]
@@ -45,33 +43,25 @@ namespace ProgramadoraGet.Features.Tag
         }
 
         [HttpGet]
-        [Route("byTagType/{TagType}")]
-        public async Task<DefaultResponse<IList<Domain.Tag>>> ReadByTagType(Read.Model model)
+        [Route("byTagType")]
+        public async Task<DefaultResponse<IList<Domain.Tag>>> ReadByTagType(string tgType)
         {
-            var response = new DefaultResponse<IList<Domain.Tag>>();
-
-            if (!ModelState.IsValid)
+            object tagType = null;
+            if (!Enum.TryParse(typeof(Domain.TagType), tgType, out tagType))
             {
-                response.erros = ErrorMessagesHelper.GetErrors(ModelState);
-                return response;
+                throw new Exception("erro");
             }
 
-            response.data = await new Read.Services(db).ByTagType(model);
+            Tag.Read.Model tg = new Tag.Read.Model();
+            tg.TagType = (Domain.TagType) tagType;
+            var response = new DefaultResponse<IList<Domain.Tag>>();
+            // Retornar enum inválido
+
+            response.data = await new Read.Services(db).ByTagType(tg);
 
             return response;
 
         }
-
-        //[HttpGet]
-        //[Route("byTagType/normal")]
-        //public async Task<DefaultResponse<IList<Domain.Tag>>> ReadByTagTypeNormal(Read.Model model)
-        //{
-
-        //    return ReadByTagType(new Read.Model { TagType = 0 });
-
-
-        //}
-
 
     }
 }

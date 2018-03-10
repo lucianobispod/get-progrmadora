@@ -21,7 +21,7 @@ namespace ProgramadoraGet.Features.Tag
         public class Validator : AbstractValidator<Model> {
             public Validator()
             {
-                //RuleFor(r => r.Id).NotEmpty().WithMessage("Identificador nulo");
+                // RuleFor(r => r.Id).NotEmpty().WithMessage("Identificador nulo");
             }
         }
 
