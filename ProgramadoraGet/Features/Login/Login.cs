@@ -1,9 +1,14 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using ProgramadoraGet.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ProgramadoraGet.Features.Login
@@ -31,33 +36,52 @@ namespace ProgramadoraGet.Features.Login
             }
         }
 
-        public class Response
+        public class TokenInformation
         {
             public string Token { get; set; }
 
             public DateTime Expiration { get; set; }
+
         }
 
         public class Services
         {
+            private readonly IConfiguration configuration;
+
             private readonly Db db;
 
-            public Services(Db db)
+            public Services(Db db, IConfiguration configuration)
             {
                 this.db = db;
+                this.configuration = configuration;
             }
 
-            public async void SingIn(Model model)
+            public async Task<TokenInformation> SingIn(Model model)
             {
                 var user = await db.Users.SingleOrDefaultAsync(u => u.Email == model.Email);
 
                 if (user != null && !user.IsPasswordEqualsTo(model.Password)) throw new Exception();
 
 
-                var enterprise = await db.Enterprises.SingleOrDefaultAsync(u => u.Email == model.Email);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecurityKey"]));
 
-                if (enterprise != null && !enterprise.IsPasswordEqualsTo(model.Password)) throw new Exception();
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+                var claims = new[]
+               {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+                var token = new JwtSecurityToken(
+                    issuer: "yourdomain.com",
+                    audience: "yourdomain.com",
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: creds);
+
+
+                return new TokenInformation { Token = new JwtSecurityTokenHandler().WriteToken(token), Expiration = token.ValidTo};
 
 
 

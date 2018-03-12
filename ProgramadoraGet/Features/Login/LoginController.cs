@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using ProgramadoraGet.Infrastructure;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,42 +18,23 @@ namespace ProgramadoraGet.Features.Login
     [Route("api/[controller]")]
     public class LoginController : Controller
     {
-        IConfiguration _configuration;
-        public LoginController(IConfiguration configuration)
+        private readonly IConfiguration configuration;
+
+        private readonly Db db;
+
+        public LoginController(IConfiguration configuration, Db db)
         {
-            _configuration = configuration;
+            this.configuration = configuration;
+            this.db = db;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult RequestToken([FromBody] Login.Model request)
+        public async Task<Login.TokenInformation> Login([FromBody] Login.Model model)
         {
-            if (request.Email == "Jon" && request.Password == "teste")
-            {
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, request.Email)
-                };
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecurityKey"]));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                var token = new JwtSecurityToken(
-                    issuer: "yourdomain.com",
-                    audience: "yourdomain.com",
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(30),
-                    signingCredentials: creds);
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token)
-                });
-            }
-
-            return BadRequest("Could not verify username and password");
+            return await new Login.Services(db, configuration).SingIn(model);
         }
+
+
     }
-
-
 }
