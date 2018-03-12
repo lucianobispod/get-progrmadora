@@ -23,19 +23,11 @@ namespace ProgramadoraGet.Features.Enterprise
                 this.db = db;
             }
 
-            public class Validator : AbstractValidator<Model>
-            {
-                public Validator()
-                {
-                    RuleFor(r => r.Id).NotEmpty().WithMessage("Identificador nulo");
-                }
-            }
-
             public async Task<DateTime?> Trash(Model model)
             {
                 var enterprise = await db.Enterprises.FindAsync(model.Id);
 
-                // if (user == null) throw new Exception();
+                if (enterprise == null) throw new Exception();
 
                 enterprise.DeletedAt = DateTime.Now;
 

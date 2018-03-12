@@ -38,31 +38,18 @@ namespace ProgramadoraGet.Features.Enterprise
         }
         
         [HttpGet]
-        public async Task<DefaultResponse<IList<Domain.Enterprise>>>  ReadAll()
+        public async Task<IList<Domain.Enterprise>>  ReadAll()
         {
-            var response = new DefaultResponse<IList<Domain.Enterprise>>();
-
-            response.data = await new Read.Services(db).All();
-
-            return response;
+            return await new Read.Services(db).All();
         }
 
 
         [HttpGet]
         [Route("{Id}")]
-        public async Task<DefaultResponse<IList<Domain.Enterprise>>> ReadOne(Read.Model model)
+        public async Task<IList<Domain.Enterprise>> ReadOne(Read.Model model)
         {
-            var response = new DefaultResponse<IList<Domain.Enterprise>> ();
 
-            if (!ModelState.IsValid)
-            {
-                response.erros = ErrorMessagesHelper.GetErrors(ModelState);
-                return response;
-            }
-            
-            response.data = await new Read.Services(db).One(model);
-
-            return response;
+            return await new Read.Services(db).One(model);
         }
 
         [HttpPut]
@@ -86,19 +73,9 @@ namespace ProgramadoraGet.Features.Enterprise
 
         [HttpDelete]
         [Route("{Id}")]
-        public async Task<DefaultResponse<DateTime?>> Delete(Delete.Model model)
+        public async Task<DateTime?> Delete(Delete.Model model)
         {
-            var response = new DefaultResponse<DateTime?>();
-
-            if (!ModelState.IsValid)
-            {
-                response.erros = ErrorMessagesHelper.GetErrors(ModelState);
-                return response;
-            }
-
-            response.data = await new Delete.Services(db).Trash(model);
-
-            return response;
+            return await new Delete.Services(db).Trash(model);
         }
 
 

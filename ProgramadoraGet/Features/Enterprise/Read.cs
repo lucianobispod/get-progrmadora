@@ -15,14 +15,6 @@ namespace ProgramadoraGet.Features.Enterprise
             public Guid Id { get; set; }
         }
 
-        public class Validator : AbstractValidator<Model>
-        {
-            public Validator()
-            {
-                RuleFor(r => r.Id).NotEmpty().WithMessage("Identificador nulo");
-            }
-        }
-
         public class Services
         {
             private readonly Db db;
@@ -53,7 +45,7 @@ namespace ProgramadoraGet.Features.Enterprise
 
             public async Task<IList<Domain.Enterprise>> One(Model model)
             {
-                // if (model.Id == null) throw new Exception();
+                if (model.Id == null) throw new Exception();
 
                 return await db.Enterprises
                      .Where(e => e.DeletedAt == null)
