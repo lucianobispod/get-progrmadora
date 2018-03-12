@@ -35,7 +35,10 @@ namespace ProgramadoraGet
         {
             services.AddDbContext<Db>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc()
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(ValidationActionFilter)); // by type
+            })
                 .AddFeatureFolders()
                 .AddFluentValidation(fluentValidator => fluentValidator.RegisterValidatorsFromAssemblyContaining<Startup>());
 
