@@ -10,19 +10,10 @@ namespace ProgramadoraGet.Features.Tag
 {
     public class Read
     {
-        //TODO: by ID
-        //TODO: by TagType
         public class Model
         {
             public Guid Id { get; set; }
             public Domain.TagType TagType { get; set; }
-        }
-
-        public class Validator : AbstractValidator<Model> {
-            public Validator()
-            {
-                // RuleFor(r => r.Id).NotEmpty().WithMessage("Identificador nulo");
-            }
         }
 
         public class Services
