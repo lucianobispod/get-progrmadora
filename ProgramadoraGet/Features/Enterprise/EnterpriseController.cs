@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
@@ -78,6 +80,12 @@ namespace ProgramadoraGet.Features.Enterprise
             return await new Delete.Services(db).Trash(model);
         }
 
-
+        [Authorize]
+        [HttpGet]
+        [Route("Me")]
+        public async Task<Domain.Enterprise> Me()
+        {
+            return await new Me.Services(db).Me(new Me.Model { Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });
+        }
     }
 }
