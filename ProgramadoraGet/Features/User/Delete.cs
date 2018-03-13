@@ -38,6 +38,10 @@ namespace ProgramadoraGet.Features.User
                 
                 if (user == null) throw new Exception();
 
+                if (user != null && user.DeletedAt != null)
+                    return user.DeletedAt;
+
+
                 user.DeletedAt = DateTime.Now;
 
                 await db.SaveChangesAsync();
