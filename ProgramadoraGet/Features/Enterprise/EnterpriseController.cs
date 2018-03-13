@@ -56,9 +56,9 @@ namespace ProgramadoraGet.Features.Enterprise
 
         [HttpPut]
         [Route("{Id}")]
-        public async Task<DefaultResponse<Domain.Enterprise>> Update(Guid id, [FromBody]Update.Model model)
+        public async Task<DefaultResponse<Domain.Enterprise>> Update([FromBody]Update.Model model)
         {
-            model.Id = id;
+            model.Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
 
             var response = new DefaultResponse<Domain.Enterprise>();
 
