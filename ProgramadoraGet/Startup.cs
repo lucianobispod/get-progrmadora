@@ -51,10 +51,10 @@ namespace ProgramadoraGet
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "yourdomain.com",
-                        ValidAudience = "yourdomain.com",
+                        ValidIssuer = Configuration["Token:Issuer"],
+                        ValidAudience = Configuration["Token:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(Configuration["SecurityKey"]))
+                            Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"]))
                     };
                 });
 
