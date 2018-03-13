@@ -109,6 +109,8 @@ namespace ProgramadoraGet.Features.Enterprise
                     else
                         enterprise.SetPassword(model.NewPassword);
 
+                enterprise.UpdatedAt = DateTime.Now;
+
                 await db.SaveChangesAsync();
 
                 return enterprise;

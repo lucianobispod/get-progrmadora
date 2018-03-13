@@ -43,7 +43,7 @@ namespace ProgramadoraGet.Features.User
                 RuleFor(validate => validate.Email)
                        .Length(20, 100).WithMessage("Email deve conter de 20 a 100 caracteres")
                        .EmailAddress().WithMessage("Email inválido")
-                       .NotEmpty().WithMessage("Email vazio"); 
+                       .NotEmpty().WithMessage("Email vazio");
 
                 RuleFor(validate => validate.NewPassword)
                     .Length(8, 20);
@@ -127,11 +127,12 @@ namespace ProgramadoraGet.Features.User
                     if (!user.IsPasswordEqualsTo(model.CurrentPassword)) throw new Exception();
                     else user.SetPassword(model.NewPassword);
 
+                user.UpdatedAt = DateTime.Now;
 
                 await db.SaveChangesAsync();
 
                 user.PasswordHash = null;
-                user.PasswordSalt = null; 
+                user.PasswordSalt = null;
 
                 return user;
             }
