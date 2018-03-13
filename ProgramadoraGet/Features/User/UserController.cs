@@ -25,6 +25,7 @@ namespace ProgramadoraGet.Features.User
         {
             this.db = db;
         }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<Domain.User> Create([FromBody] Create.Model model)
@@ -60,6 +61,14 @@ namespace ProgramadoraGet.Features.User
         public async Task<Domain.User> Me()
         {
             return await new Me.Services(db).Me(new Me.Model { Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });
+        }
+
+        [Authorize]
+        [HttpPut]
+        public async Task<Domain.User> Update([FromBody] Update.Model model)
+        {
+            model.Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
+            return await new Update.Services(db).Save(model);
         }
     }
 }
