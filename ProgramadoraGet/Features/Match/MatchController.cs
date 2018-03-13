@@ -11,10 +11,6 @@ namespace ProgramadoraGet.Features.Match
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
-        //TODO: ReadOne
-        //TODO: ReadAll
-        //TODO: Create
-        //TODO: Update
         //TODO: Delete
 
         private Db db;
@@ -40,8 +36,13 @@ namespace ProgramadoraGet.Features.Match
             response.data = await services.Save(model);
 
             return response;
+        }
 
-
+        [HttpGet]
+        [Route("{EnterpriseId}")]
+        public async Task<IList<Domain.Match>> ReadOne (Read.Model model)
+        {
+            return await new Read.Services(db).One(model);
         }
 
     }
