@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using ProgramadoraGet.Utils;
 
 namespace ProgramadoraGet.Features.User
 {
+    
     [Route("api/[controller]")]
     public class UserController : Controller
     {
@@ -23,32 +25,21 @@ namespace ProgramadoraGet.Features.User
         {
             this.db = db;
         }
-
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<DefaultResponse<Domain.User>> Create([FromBody] Create.Model model)
+        public async Task<Domain.User> Create([FromBody] Create.Model model)
         {
-            var response = new DefaultResponse<Domain.User>();
-
-            if (!ModelState.IsValid)
-            {
-                response.erros = ErrorMessagesHelper.GetErrors(ModelState);
-                return response;
-            }
-
-            var services = new Create.Services(db);
-
-            response.data = await services.Save(model);
-
-            return response;
+            return await new Create.Services(db).Save(model);
         }
+
         [Authorize]
         [HttpGet]
         public async Task<IList<Domain.User>> ReadAll()
         {
-            var username = User.Claims.Where(c=> c.Type == ClaimTypes.Name).FirstOrDefault().Value;
             return await new Read.Services(db).All();
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{Id}")]
         public async Task<IList<Domain.User>> ReadOne(Read.Model model)
@@ -56,12 +47,19 @@ namespace ProgramadoraGet.Features.User
             return await new Read.Services(db).One(model);
         }
 
+        [Authorize]
         [HttpDelete]
-        [Route("{Id}")]
-        public async Task<DateTime?> Delete(Delete.Model model)
+        public async Task<DateTime?> Delete()
         {
-            return await new Delete.Services(db).Trash(model);
+            return await new Delete.Services(db).Trash(new Delete.Model { Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("Me")]
+        public async Task<Domain.User> Me()
+        {
+            return await new Me.Services(db).Me(new Me.Model { Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });
+        }
     }
 }
