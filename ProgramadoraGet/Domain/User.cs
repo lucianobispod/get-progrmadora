@@ -86,6 +86,8 @@ namespace ProgramadoraGet.Domain
 
         public virtual ICollection<Skills> Skills { get; set; }
 
+        public virtual ICollection<HistoricAcademic> Historic { get; set; }
+
         #endregion
 
 

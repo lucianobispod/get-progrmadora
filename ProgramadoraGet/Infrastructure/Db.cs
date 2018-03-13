@@ -83,6 +83,15 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Feedback>().Property(d => d.Content).HasMaxLength(200);
             m.Entity<Feedback>().Property(d => d.Title).HasMaxLength(100);
 
+            m.Entity<HistoricAcademic>().HasOne(h => h.User).WithMany(w => w.Historic).HasForeignKey(f => f.UserId);
+            m.Entity<HistoricAcademic>().Property(d => d.Institution).HasMaxLength(100).IsRequired();
+            m.Entity<HistoricAcademic>().Property(d => d.Course).HasMaxLength(100).IsRequired();
+            m.Entity<HistoricAcademic>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            m.Entity<HistoricAcademic>().Property(d => d.Period).HasMaxLength(50).IsRequired();
+            m.Entity<HistoricAcademic>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+
+
+
             m.Entity<LikeTag>().HasKey(s => new { s.UserId, s.TagId }).ForSqlServerIsClustered(true);
             m.Entity<LikeTag>().HasOne(h => h.User).WithMany(w => w.LikeTag).HasForeignKey(f => f.UserId);
             m.Entity<LikeTag>().HasOne(h => h.Tag).WithMany(w => w.LikeTag).HasForeignKey(f => f.TagId);
@@ -141,6 +150,7 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<User>().HasMany(h => h.RecoveryPassword).WithOne(w => w.User);
             m.Entity<User>().HasMany(h => h.Question).WithOne(w => w.User);
             m.Entity<User>().HasMany(h => h.Notification).WithOne(w => w.User);
+            m.Entity<User>().HasMany(h => h.Historic).WithOne(w => w.User);
             m.Entity<User>().Property(d => d.Name).HasMaxLength(50);
             m.Entity<User>().Property(d => d.LastName).HasMaxLength(50);
             m.Entity<User>().Property(d => d.Location).HasMaxLength(100);
