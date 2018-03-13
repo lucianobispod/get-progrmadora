@@ -55,8 +55,7 @@ namespace ProgramadoraGet.Features.Enterprise
                 var enterprise = new Domain.Enterprise
                 {
                     Name = model.Name,
-                    Email = model.Email,
-                    CreatedAt = DateTime.Now,
+                    Email = model.Email
                 };
 
                 enterprise.SetPassword(model.Password);
