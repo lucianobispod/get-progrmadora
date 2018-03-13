@@ -42,7 +42,8 @@ namespace ProgramadoraGet.Features.User
             {
                 RuleFor(validate => validate.Email)
                        .Length(20, 100).WithMessage("Email deve conter de 20 a 100 caracteres")
-                       .EmailAddress().WithMessage("Email inválido");
+                       .EmailAddress().WithMessage("Email inválido")
+                       .NotEmpty().WithMessage("Email vazio"); 
 
                 RuleFor(validate => validate.NewPassword)
                     .Length(8, 20);
@@ -54,23 +55,17 @@ namespace ProgramadoraGet.Features.User
                     .NotEmpty()
                     .Length(5, 50);
 
-                RuleFor(validate => validate.Description)
-                    .MaximumLength(100);
-
                 RuleFor(validate => validate.Name)
                     .Length(3, 50)
                     .NotEmpty();
 
                 RuleFor(validate => validate.PhoneNumber)
-                   .MaximumLength(14).WithMessage("Limite caracteres ultrapassado")
-                   .NotEmpty().WithMessage("O telefone não pode ser nulo");
+                   .MaximumLength(14).WithMessage("Limite caracteres ultrapassado");
 
                 RuleFor(validate => validate.Location)
-                    .Length(5, 100).WithMessage("Localização precisa conter entre 5 e 100 caracteres")
-                    .NotEmpty().WithMessage("A localização não pode ser vazia");
+                    .Length(5, 100).WithMessage("Localização precisa conter entre 5 e 100 caracteres");
 
                 RuleFor(validate => validate.State)
-                    .NotEmpty().WithMessage("O estado não pode ser vazio")
                     .MaximumLength(2).WithMessage("Limite de caracteres ultrapassado");
 
                 RuleFor(validate => validate.Description)
@@ -134,6 +129,9 @@ namespace ProgramadoraGet.Features.User
 
 
                 await db.SaveChangesAsync();
+
+                user.PasswordHash = null;
+                user.PasswordSalt = null; 
 
                 return user;
             }
