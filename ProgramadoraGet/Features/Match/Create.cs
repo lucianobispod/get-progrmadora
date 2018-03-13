@@ -42,7 +42,7 @@ namespace ProgramadoraGet.Features.Match
                 if (user == null) throw new Exception();
                 if (user.DeletedAt != null) throw new Exception();
 
-                var enterprise = await db.Tags.FindAsync(model.EnterpriseId);
+                var enterprise = await db.Enterprises.FindAsync(model.EnterpriseId);
 
                 if (enterprise == null) throw new Exception();
                 if (enterprise.DeletedAt != null) throw new Exception();
