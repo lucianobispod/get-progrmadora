@@ -48,6 +48,8 @@ namespace ProgramadoraGet.Features.Login
         {
             private readonly IConfiguration configuration;
 
+            private Guid Identificador { get; set; }
+
             private readonly Db db;
 
             public Services(Db db, IConfiguration configuration)
@@ -60,22 +62,38 @@ namespace ProgramadoraGet.Features.Login
             {
                 var user = await db.Users.SingleOrDefaultAsync(u => u.Email == model.Email);
 
+                var enterprise = await db.Enterprises.SingleOrDefaultAsync(u => u.Email == model.Email);
+
+
+                if (enterprise == null && user == null) throw new Exception();
+                if (enterprise != null && user != null) throw new Exception();
+
                 if (user != null && !user.IsPasswordEqualsTo(model.Password)) throw new Exception();
 
+                if (enterprise != null && !enterprise.IsPasswordEqualsTo(model.Password)) throw new Exception();
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecurityKey"]));
+
+                if (enterprise != null)
+                    Identificador = enterprise.Id;
+                
+
+                if (user != null)
+                    Identificador = user.Id;
+
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:SecurityKey"]));
 
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var claims = new[]
                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.PrimarySid, Identificador.ToString()),
+                    new Claim(ClaimTypes.Hash, Guid.NewGuid().ToString()),
                 };
 
                 var token = new JwtSecurityToken(
-                    issuer: "yourdomain.com",
-                    audience: "yourdomain.com",
+                    issuer: configuration["Token:Issuer"],
+                    audience: configuration["Token:Audience"],
                     claims: claims,
                     expires: DateTime.Now.AddMinutes(30),
                     signingCredentials: creds);
