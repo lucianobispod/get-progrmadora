@@ -34,13 +34,10 @@ namespace ProgramadoraGet.Features.Match
                     {
                         EnterpriseId = match.EnterpriseId,
                         UserId = match.UserId, // TODO: Verificar retorno
-                        User = match.User
                     }).ToListAsync();
             }
-
-
+            
         }
-
-
+        
     }
 }
