@@ -15,8 +15,6 @@ namespace ProgramadoraGet.Domain
 
         public Guid UserId { get; set; }
 
-        public Guid QuestionTagId { get; set; }
-
         public DateTime UpdatedAt { get; set; }
 
         public DateTime CreatedAt { get; set; }
