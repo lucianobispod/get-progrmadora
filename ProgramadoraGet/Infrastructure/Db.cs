@@ -110,9 +110,10 @@ namespace ProgramadoraGet.Infrastructure
 
             m.Entity<Question>().Property(d => d.UpdatedAt).ValueGeneratedOnAddOrUpdate().HasDefaultValueSql("getdate()");
             m.Entity<Question>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
-            m.Entity<Question>().HasOne(h => h.User).WithMany(w => w.Question);
+            m.Entity<Question>().HasOne(h => h.User).WithMany(w => w.Question).HasForeignKey(f => f.UserId);
             m.Entity<Question>().HasMany(h => h.Comment).WithOne(w => w.Question);
             m.Entity<Question>().Property(d => d.Content).IsRequired();
+            m.Entity<Question>().Property(d => d.Content).HasMaxLength(500);
             m.Entity<Question>().Property(d => d.Title).IsRequired();
             m.Entity<Question>().Property(d => d.Title).HasMaxLength(150);
 
