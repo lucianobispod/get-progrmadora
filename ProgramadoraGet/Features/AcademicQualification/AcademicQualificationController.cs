@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
 using ProgramadoraGet.Utils;
 
-namespace ProgramadoraGet.Features.HistoricAcademic
+namespace ProgramadoraGet.Features.AcademicQualification
 {
+    [Route("api/[controller]")]
     public class AcademicQualificationController : Controller
     {
         private Db db;
@@ -30,7 +31,7 @@ namespace ProgramadoraGet.Features.HistoricAcademic
 
             var services = new Create.Services(db);
 
-            //response.data = await services.Save(model);
+            response.data = await services.Save(model);
 
             return response;
         }
