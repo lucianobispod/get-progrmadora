@@ -8,19 +8,19 @@ using ProgramadoraGet.Utils;
 
 namespace ProgramadoraGet.Features.HistoricAcademic
 {
-    public class HistoricAcademicController : Controller
+    public class AcademicQualificationController : Controller
     {
         private Db db;
 
-        public HistoricAcademicController(Db db)
+        public AcademicQualificationController(Db db)
         {
             this.db = db;
         }
 
         // TODO: Insert, update, delete, read
         [HttpPost]
-        public async Task<DefaultResponse<Domain.HistoricAcademic>> Create ([FromBody]Create.Model model){
-            var response = new DefaultResponse<Domain.HistoricAcademic>();
+        public async Task<DefaultResponse<Domain.AcademicQualification>> Create ([FromBody]Create.Model model){
+            var response = new DefaultResponse<Domain.AcademicQualification>();
 
             if (!ModelState.IsValid)
             {
@@ -30,7 +30,7 @@ namespace ProgramadoraGet.Features.HistoricAcademic
 
             var services = new Create.Services(db);
 
-            response.data = await services.Save(model);
+            //response.data = await services.Save(model);
 
             return response;
         }

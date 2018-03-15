@@ -27,7 +27,7 @@ namespace ProgramadoraGet.Features.Match
             {
                 if (model.EnterpriseId == null) throw new Exception();
 
-                return await db.Matchs
+                return await db.Matches
                     .Where(w => w.EnterpriseId == model.EnterpriseId)
                     .Include(i => i.User)
                     .Select(match => new Domain.Match

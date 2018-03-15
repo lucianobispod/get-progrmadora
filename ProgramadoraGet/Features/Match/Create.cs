@@ -53,7 +53,7 @@ namespace ProgramadoraGet.Features.Match
                     EnterpriseId = enterprise.Id
                 };
                 
-                db.Matchs.Add(match);
+                db.Matches.Add(match);
 
                 await db.SaveChangesAsync();
 

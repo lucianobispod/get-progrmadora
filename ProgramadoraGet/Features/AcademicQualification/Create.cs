@@ -61,12 +61,13 @@ namespace ProgramadoraGet.Features.HistoricAcademic
                 this.db = db;
             }
 
-            public async Task<Domain.HistoricAcademic> Save (Model model)
-            {
-                // TODO: Create!!!
-            }
-
+            //public async Task<Domain.AcademicQualification> Save (Model model)
+            //{
+                
+            //}
         }
+
+        
 
     }
 }
