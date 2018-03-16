@@ -44,6 +44,7 @@ namespace ProgramadoraGet.Infrastructure
         {
             base.OnModelCreating(m);
 
+            m.Entity<AcademicQualification>().ToTable(nameof(AcademicQualification));
             m.Entity<Comment>().ToTable(nameof(Comment));
             m.Entity<Enterprise>().ToTable(nameof(Enterprise));
             m.Entity<Feedback>().ToTable(nameof(Feedback));
@@ -91,9 +92,7 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<AcademicQualification>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
             m.Entity<AcademicQualification>().Property(d => d.Period).HasMaxLength(50).IsRequired();
             m.Entity<AcademicQualification>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
-
-
-
+            
             m.Entity<LikeTag>().HasKey(s => new { s.UserId, s.TagId }).ForSqlServerIsClustered(true);
             m.Entity<LikeTag>().HasOne(h => h.User).WithMany(w => w.LikeTag).HasForeignKey(f => f.UserId);
             m.Entity<LikeTag>().HasOne(h => h.Tag).WithMany(w => w.LikeTag).HasForeignKey(f => f.TagId);
