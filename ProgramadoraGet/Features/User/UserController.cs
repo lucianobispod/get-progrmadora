@@ -70,5 +70,14 @@ namespace ProgramadoraGet.Features.User
             model.Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
             return await new Update.Services(db).Save(model);
         }
+
+
+        [HttpGet]
+        [Route("MyQuestions")]
+        public async Task<IList<MyQuestions.QuestionDefault>> MyQuestions()
+        {
+            return await new MyQuestions.Services(db).MyQuestions(new MyQuestions.Model {  Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });
+        }
+
     }
 }
