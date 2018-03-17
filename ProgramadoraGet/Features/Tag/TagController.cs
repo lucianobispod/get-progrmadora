@@ -24,8 +24,7 @@ namespace ProgramadoraGet.Features.Tag
             return await new Create.Services(db).Save(model); 
         }
 
-        [HttpGet]
-        [Route("{Id}")]
+        [HttpGet("{Id}")]
         public async Task<IList<Domain.Tag>> Read(Read.Model model)
         {
             return await new Read.Services(db).One(model);

@@ -35,7 +35,12 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
             return response;
         }
-    
 
+        //[HttpGet]
+        //public async Task<IList<Domain.AcademicQualification>> ReadOne(Read.Model model)
+        //{
+        //    return await new Read.Services(db).One(model);
+
+        //}
     }
 }

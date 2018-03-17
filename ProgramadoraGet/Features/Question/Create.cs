@@ -46,22 +46,22 @@ namespace ProgramadoraGet.Features.Question
                 this.db = db;
             }
 
-            public async Task<Domain.Question> Save(Model model)
-            {
-                var user = await db.Users.FindAsync(model.UserId);
+            //public async Task<Domain.Question> Save(Model model)
+            //{
+            //    var user = await db.Users.FindAsync(model.UserId);
 
-                if (user == null) throw new Exception();
-                if (user != null && user.DeletedAt != null) throw new Exception();
+            //    if (user == null) throw new Exception();
+            //    if (user != null && user.DeletedAt != null) throw new Exception();
 
-                db.Add(new Domain.Question
-                {
-                    Title = model.Title,
-                    Content = model.Content,
-                    UserId = model.UserId,
+            //    db.Add(new Domain.Question
+            //    {
+            //        Title = model.Title,
+            //        Content = model.Content,
+            //        UserId = model.UserId,
                      
-                });
+            //    });
 
-            }
+            //}
         }
 
     }
