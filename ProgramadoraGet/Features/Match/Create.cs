@@ -57,7 +57,7 @@ namespace ProgramadoraGet.Features.Match
 
                 await db.SaveChangesAsync();
                 
-                return match;
+                return new Domain.Match { UserId = match.UserId, EnterpriseId = match.EnterpriseId };
             }
         }
 

@@ -82,7 +82,7 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
                 await db.SaveChangesAsync();
 
-                return aq;
+                return new Domain.AcademicQualification { Id = aq.Id, Course = aq.Course, Institution = aq.Institution, FinishedAt = aq.FinishedAt, StartedAt = aq.StartedAt, Period = aq.Period, UserId = aq.UserId };
 
             }
         }

@@ -18,7 +18,7 @@ namespace ProgramadoraGet.Features.AcademicQualification
             this.db = db;
         }
 
-        // TODO: Insert, update, delete, read
+        // TODO: update, delete, read
         [HttpPost]
         public async Task<DefaultResponse<Domain.AcademicQualification>> Create ([FromBody]Create.Model model){
             var response = new DefaultResponse<Domain.AcademicQualification>();

@@ -60,7 +60,7 @@ namespace ProgramadoraGet.Features.Tag
 
                 await db.SaveChangesAsync();
 
-                return tag;
+                return new Domain.Tag { Id = tag.Id , Name = tag.Name, TagType = tag.TagType };
 
             }
         }
