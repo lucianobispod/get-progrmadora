@@ -85,6 +85,8 @@ namespace ProgramadoraGet
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            app.UseCors(builder => builder.WithOrigins("*").WithMethods("*"));
+
             app.UseMvc();
             app.Run(async (context) =>
             {

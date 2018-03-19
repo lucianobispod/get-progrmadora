@@ -86,7 +86,7 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Feedback>().Property(d => d.Content).HasMaxLength(200);
             m.Entity<Feedback>().Property(d => d.Title).HasMaxLength(100);
 
-            m.Entity<AcademicQualification>().HasOne(h => h.User).WithMany(w => w.Historic).HasForeignKey(f => f.UserId);
+            m.Entity<AcademicQualification>().HasOne(h => h.User).WithMany(w => w.Qualifications).HasForeignKey(f => f.UserId);
             m.Entity<AcademicQualification>().Property(d => d.Institution).HasMaxLength(100).IsRequired();
             m.Entity<AcademicQualification>().Property(d => d.Course).HasMaxLength(100).IsRequired();
             m.Entity<AcademicQualification>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
@@ -152,7 +152,7 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<User>().HasMany(h => h.RecoveryPassword).WithOne(w => w.User);
             m.Entity<User>().HasMany(h => h.Question).WithOne(w => w.User);
             m.Entity<User>().HasMany(h => h.Notification).WithOne(w => w.User);
-            m.Entity<User>().HasMany(h => h.Historic).WithOne(w => w.User);
+            m.Entity<User>().HasMany(h => h.Qualifications).WithOne(w => w.User);
             m.Entity<User>().Property(d => d.Name).HasMaxLength(50);
             m.Entity<User>().Property(d => d.LastName).HasMaxLength(50);
             m.Entity<User>().Property(d => d.Location).HasMaxLength(100);

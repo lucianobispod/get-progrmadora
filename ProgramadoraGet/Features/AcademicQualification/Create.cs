@@ -64,8 +64,10 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
             public async Task<Domain.AcademicQualification> Save(Model model)
             {
-                if (await db.Users.SingleOrDefaultAsync(s => s.Id == model.UserId) == null) throw new Exception();
+                if (model.StartedAt > model.FinishedAt) throw new Exception();
 
+                if (await db.Users.SingleOrDefaultAsync(s => s.Id == model.UserId) == null) throw new Exception();
+                
                 var aq = new Domain.AcademicQualification
                 {
                     Course = model.Course,
