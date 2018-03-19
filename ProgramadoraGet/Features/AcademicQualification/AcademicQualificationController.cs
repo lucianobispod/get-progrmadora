@@ -41,5 +41,12 @@ namespace ProgramadoraGet.Features.AcademicQualification
         {
             return await new Read.Services(db).One(model);
         }
+
+        [HttpDelete]
+        public async Task Delete([FromBody] Delete.Model model)
+        {
+            await new Delete.Services(db).Trash(model);
+        }
+
     }
 }

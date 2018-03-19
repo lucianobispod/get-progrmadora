@@ -50,7 +50,6 @@ namespace ProgramadoraGet.Features.AcademicQualification
                    .NotEmpty().WithMessage("O id não pode ser vazio");
 
             }
-            
         }
 
         public class Services
