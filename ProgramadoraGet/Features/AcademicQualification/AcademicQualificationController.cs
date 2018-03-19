@@ -18,7 +18,7 @@ namespace ProgramadoraGet.Features.AcademicQualification
             this.db = db;
         }
 
-        // TODO: update, delete, read
+        // TODO: update, read
         [HttpPost]
         public async Task<DefaultResponse<Domain.AcademicQualification>> Create ([FromBody]Create.Model model){
             var response = new DefaultResponse<Domain.AcademicQualification>();
@@ -42,10 +42,25 @@ namespace ProgramadoraGet.Features.AcademicQualification
             return await new Read.Services(db).One(model);
         }
 
-        [HttpDelete]
-        public async Task Delete([FromBody] Delete.Model model)
+        [HttpDelete("{Id}")]
+        public async Task Delete(Delete.Model model)
         {
             await new Delete.Services(db).Trash(model);
+        }
+
+        [HttpPut("{Id}")]
+        public async Task<DefaultResponse<Domain.AcademicQualification>> Update(Update.Model model)
+        {
+            var response = new DefaultResponse<Domain.AcademicQualification>();
+
+            if (!ModelState.IsValid)
+            {
+                response.erros = ErrorMessagesHelper.GetErrors(ModelState);
+                return response;
+            }
+
+            response.data = await new Update.Services(db).Save(model);
+            return response;
         }
 
     }
