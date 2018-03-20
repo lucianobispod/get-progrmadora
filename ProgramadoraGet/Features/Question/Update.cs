@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using ProgramadoraGet.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -7,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace ProgramadoraGet.Features.Question
 {
-    public class Create
+    public class Update
     {
         public class Model
         {
-            public string Content { get; set; }
+            public Guid QuestionIdentifier { get; set; }
 
             public string Title { get; set; }
 
-            public Guid UserId { get; set; }
+            public string Content { get; set; }
+
+            public Guid UserIdentifier { get; set; }
 
             public Guid[] Tags { get; set; }
 
@@ -74,46 +77,72 @@ namespace ProgramadoraGet.Features.Question
 
             public async Task<QuestionDefault> Save(Model model)
             {
-                var user = await db.Users.FindAsync(model.UserId);
+                var user = await db.Users.FindAsync(model.UserIdentifier);
 
                 if (user == null) throw new Exception();
                 if (user != null && user.DeletedAt != null) throw new Exception();
 
-                var question = new Domain.Question
-                {
-                    Title = model.Title,
-                    Content = model.Content,
-                    UserId = model.UserId,
-                };
+                var question = await db.Questions.FindAsync(model.QuestionIdentifier);
 
-                db.Questions.Add(question);
+                if (question == null) throw new Exception();
+                if (question != null && question.DeletedAt != null) throw new Exception();
+
+                if (question.UserId != model.UserIdentifier) throw new Exception();
 
 
-                var questionTags = new List<Domain.QuestionTag>();
+                question.Title = model.Title;
+
+                question.Content = model.Content;
+
+
+
                 var Tags = new List<QuestionDefault.Tag>();
 
-                var tagsDisyinct = model.Tags
-                      .Distinct();
-
-                if (tagsDisyinct.Count() > 10) throw new Exception();
-
-                foreach (var item in tagsDisyinct)
-                {
-
-                    var tag = await db.Tags.FindAsync(item);
-
-                    if (tag == null) throw new Exception();
-
-                    Tags.Add(new QuestionDefault.Tag { Id = tag.Id, Name = tag.Name, Type = tag.TagType });
-
-                    questionTags.Add(new Domain.QuestionTag { TagId = item, QuestionId = question.Id });
 
 
-                }
+                var questionTag = await db.QuestionTags
+                    .Where(s => s.QuestionId == question.Id)
+                    .Select(r => new Domain.QuestionTag
+                    {
+                        QuestionId = r.QuestionId,
+                        TagId = r.TagId
+                    }).ToListAsync();
 
-                db.QuestionTags.AddRange(questionTags);
+
+                db.QuestionTags.RemoveRange(questionTag);
 
                 await db.SaveChangesAsync();
+
+                if (model.Tags.Count() > 0)
+                {
+                    var tagsDisyinct = model.Tags.Distinct();
+
+                    if (tagsDisyinct.Count() > 10) throw new Exception();
+
+                    foreach (var item in tagsDisyinct)
+                    {
+
+                        var tag = await db.Tags.FindAsync(item);
+
+                        if (tag == null) throw new Exception();
+                        if (tag != null && tag.DeletedAt != null) throw new Exception();
+
+
+                        var questiontagExists = await db.QuestionTags
+                            .SingleOrDefaultAsync(s => s.QuestionId == question.Id && s.TagId == item);
+
+                        if (questiontagExists == null)
+                        {
+                            db.QuestionTags.Add
+                                    (new Domain.QuestionTag { QuestionId = question.Id, TagId = item });
+                        }
+
+                        Tags.Add(new QuestionDefault.Tag { Id = tag.Id, Name = tag.Name, Type = tag.TagType });
+
+                    }
+
+                    await db.SaveChangesAsync();
+                }
 
                 return new QuestionDefault
                 {
@@ -127,8 +156,5 @@ namespace ProgramadoraGet.Features.Question
                 };
             }
         }
-
     }
 }
-
-
