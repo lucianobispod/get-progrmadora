@@ -38,8 +38,7 @@ namespace ProgramadoraGet.Features.Match
             return response;
         }
 
-        [HttpGet]
-        [Route("{EnterpriseId}")]
+        [HttpGet("{EnterpriseId}")]
         public async Task<IList<Domain.Match>> ReadOne (Read.Model model)
         {
             return await new Read.Services(db).One(model);

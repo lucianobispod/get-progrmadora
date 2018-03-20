@@ -53,11 +53,11 @@ namespace ProgramadoraGet.Features.Match
                     EnterpriseId = enterprise.Id
                 };
                 
-                db.Matchs.Add(match);
+                db.Matches.Add(match);
 
                 await db.SaveChangesAsync();
-
-                return match;
+                
+                return new Domain.Match { UserId = match.UserId, EnterpriseId = match.EnterpriseId };
             }
         }
 

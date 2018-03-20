@@ -55,7 +55,7 @@ namespace ProgramadoraGet.Features.Feedback
 
                 await db.SaveChangesAsync();
 
-                return feedback;
+                return new Domain.Feedback { Id = feedback.Id, Title = feedback.Title, Content = feedback.Content, UserId = feedback.UserId };
 
             }
         }

@@ -46,16 +46,14 @@ namespace ProgramadoraGet.Features.Enterprise
         }
 
 
-        [HttpGet]
-        [Route("{Id}")]
+        [HttpGet("{Id}")]
         public async Task<IList<Domain.Enterprise>> ReadOne(Read.Model model)
         {
 
             return await new Read.Services(db).One(model);
         }
 
-        [HttpPut]
-        [Route("{Id}")]
+        [HttpPut("{Id}")]
         public async Task<DefaultResponse<Domain.Enterprise>> Update([FromBody]Update.Model model)
         {
             model.Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
@@ -73,16 +71,14 @@ namespace ProgramadoraGet.Features.Enterprise
             return response;
         }
 
-        [HttpDelete]
-        [Route("{Id}")]
+        [HttpDelete("{Id}")]
         public async Task<DateTime?> Delete(Delete.Model model)
         {
             return await new Delete.Services(db).Trash(model);
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("Me")]
+        [HttpGet("Me")]
         public async Task<Domain.Enterprise> Me()
         {
             return await new Me.Services(db).Me(new Me.Model { Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });

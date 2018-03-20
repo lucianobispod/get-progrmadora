@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using ProgramadoraGet.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProgramadoraGet.Features.HistoricAcademic
+namespace ProgramadoraGet.Features.AcademicQualification
 {
     public class Create
     {
@@ -49,7 +50,6 @@ namespace ProgramadoraGet.Features.HistoricAcademic
                    .NotEmpty().WithMessage("O id não pode ser vazio");
 
             }
-            
         }
 
         public class Services
@@ -61,12 +61,32 @@ namespace ProgramadoraGet.Features.HistoricAcademic
                 this.db = db;
             }
 
-            public async Task<Domain.HistoricAcademic> Save (Model model)
+            public async Task<Domain.AcademicQualification> Save(Model model)
             {
-                // TODO: Create!!!
-            }
+                if (model.StartedAt > model.FinishedAt) throw new Exception();
 
+                if (await db.Users.SingleOrDefaultAsync(s => s.Id == model.UserId) == null) throw new Exception();
+                
+                var aq = new Domain.AcademicQualification
+                {
+                    Course = model.Course,
+                    Institution = model.Institution,
+                    FinishedAt = model.FinishedAt,
+                    StartedAt = model.StartedAt,
+                    Period = model.Period,
+                    UserId = model.UserId
+                };
+                
+                db.AcademicQualifications.Add(aq);
+
+                await db.SaveChangesAsync();
+
+                return new Domain.AcademicQualification { Id = aq.Id, Course = aq.Course, Institution = aq.Institution, FinishedAt = aq.FinishedAt, StartedAt = aq.StartedAt, Period = aq.Period, UserId = aq.UserId };
+
+            }
         }
+
+
 
     }
 }

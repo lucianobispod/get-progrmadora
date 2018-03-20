@@ -60,7 +60,7 @@ namespace ProgramadoraGet.Features.Skills
 
                 await db.SaveChangesAsync();
 
-                return skills;
+                return new Domain.Skills{ UserId = skills.UserId, TagId = skills.TagId };
 
             }
         }

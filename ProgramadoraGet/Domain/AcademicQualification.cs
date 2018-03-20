@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProgramadoraGet.Domain
 {
-    public class HistoricAcademic
+    public class AcademicQualification
     {
         public Guid Id { get; set; }
 

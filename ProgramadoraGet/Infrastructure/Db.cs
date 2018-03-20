@@ -13,6 +13,8 @@ namespace ProgramadoraGet.Infrastructure
 
         #region Tables
 
+        public DbSet<AcademicQualification> AcademicQualifications { get; set; }
+
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<Enterprise> Enterprises { get; set; }
@@ -21,7 +23,7 @@ namespace ProgramadoraGet.Infrastructure
 
         public DbSet<LikeTag> LikeTags { get; set; }
 
-        public DbSet<Match> Matchs { get; set; }
+        public DbSet<Match> Matches { get; set; }
 
         public DbSet<Notification> Notifications { get; set; }
 
@@ -42,6 +44,7 @@ namespace ProgramadoraGet.Infrastructure
         {
             base.OnModelCreating(m);
 
+            m.Entity<AcademicQualification>().ToTable(nameof(AcademicQualification));
             m.Entity<Comment>().ToTable(nameof(Comment));
             m.Entity<Enterprise>().ToTable(nameof(Enterprise));
             m.Entity<Feedback>().ToTable(nameof(Feedback));
@@ -83,15 +86,13 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<Feedback>().Property(d => d.Content).HasMaxLength(200);
             m.Entity<Feedback>().Property(d => d.Title).HasMaxLength(100);
 
-            m.Entity<HistoricAcademic>().HasOne(h => h.User).WithMany(w => w.Historic).HasForeignKey(f => f.UserId);
-            m.Entity<HistoricAcademic>().Property(d => d.Institution).HasMaxLength(100).IsRequired();
-            m.Entity<HistoricAcademic>().Property(d => d.Course).HasMaxLength(100).IsRequired();
-            m.Entity<HistoricAcademic>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
-            m.Entity<HistoricAcademic>().Property(d => d.Period).HasMaxLength(50).IsRequired();
-            m.Entity<HistoricAcademic>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
-
-
-
+            m.Entity<AcademicQualification>().HasOne(h => h.User).WithMany(w => w.Qualifications).HasForeignKey(f => f.UserId);
+            m.Entity<AcademicQualification>().Property(d => d.Institution).HasMaxLength(100).IsRequired();
+            m.Entity<AcademicQualification>().Property(d => d.Course).HasMaxLength(100).IsRequired();
+            m.Entity<AcademicQualification>().Property(d => d.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            m.Entity<AcademicQualification>().Property(d => d.Period).HasMaxLength(50).IsRequired();
+            m.Entity<AcademicQualification>().Property(d => d.UpdatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            
             m.Entity<LikeTag>().HasKey(s => new { s.UserId, s.TagId }).ForSqlServerIsClustered(true);
             m.Entity<LikeTag>().HasOne(h => h.User).WithMany(w => w.LikeTag).HasForeignKey(f => f.UserId);
             m.Entity<LikeTag>().HasOne(h => h.Tag).WithMany(w => w.LikeTag).HasForeignKey(f => f.TagId);
@@ -151,7 +152,7 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<User>().HasMany(h => h.RecoveryPassword).WithOne(w => w.User);
             m.Entity<User>().HasMany(h => h.Question).WithOne(w => w.User);
             m.Entity<User>().HasMany(h => h.Notification).WithOne(w => w.User);
-            m.Entity<User>().HasMany(h => h.Historic).WithOne(w => w.User);
+            m.Entity<User>().HasMany(h => h.Qualifications).WithOne(w => w.User);
             m.Entity<User>().Property(d => d.Name).HasMaxLength(50);
             m.Entity<User>().Property(d => d.LastName).HasMaxLength(50);
             m.Entity<User>().Property(d => d.Location).HasMaxLength(100);

@@ -26,7 +26,7 @@ namespace ProgramadoraGet.Features.Feedback
         }
 
         [HttpGet]
-        public async Task<IList<Domain.Feedback>> List()
+        public async Task<IList<Domain.Feedback>> ReadAll()
         {
             return await new Read.Services(db).All();
 

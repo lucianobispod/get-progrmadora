@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ProgramadoraGet.Infrastructure;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ProgramadoraGet
 {
@@ -58,6 +59,12 @@ namespace ProgramadoraGet
                     };
                 });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.CustomSchemaIds(x => x.FullName);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +76,17 @@ namespace ProgramadoraGet
             }
 
             app.UseAuthentication();
+
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+            app.UseCors(builder => builder.WithOrigins("*").WithMethods("*"));
+
             app.UseMvc();
             app.Run(async (context) =>
             {
