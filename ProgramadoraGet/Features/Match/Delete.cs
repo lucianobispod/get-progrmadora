@@ -26,6 +26,9 @@ namespace ProgramadoraGet.Features.Match
 
             public async Task Trash(Model model)
             {
+                if (model.EnterpriseId == null) throw new Exception("Id da empresa é nulo");
+                if (model.UserId == null) throw new Exception("Id do usuário é nulo");
+
                 var match = await db.Matches.SingleOrDefaultAsync(s =>
                     s.UserId == model.UserId
                  && s.EnterpriseId == model.EnterpriseId);
