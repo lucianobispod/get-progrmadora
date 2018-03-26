@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
 using ProgramadoraGet.Utils;
@@ -11,8 +13,6 @@ namespace ProgramadoraGet.Features.Match
     [Route("api/[controller]")]
     public class MatchController : Controller
     {
-        //TODO: Delete
-
         private Db db;
 
         public MatchController(Db db)
@@ -20,9 +20,11 @@ namespace ProgramadoraGet.Features.Match
             this.db = db;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<DefaultResponse<Domain.Match>> Create ([FromBody] Create.Model model)
         {
+            model.EnterpriseId = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
             var response = new DefaultResponse<Domain.Match>();
 
             if (!ModelState.IsValid)
@@ -37,12 +39,15 @@ namespace ProgramadoraGet.Features.Match
 
             return response;
         }
-
-        [HttpGet("{EnterpriseId}")]
-        public async Task<IList<Domain.Match>> ReadOne (Read.Model model)
+        
+        [Authorize]
+        [HttpDelete]
+        public async Task Delete(Delete.Model model)
         {
-            return await new Read.Services(db).One(model);
-        }
+            model.EnterpriseId = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
 
+            await new Delete.Services(db).Trash(model);
+        }
+        
     }
 }
