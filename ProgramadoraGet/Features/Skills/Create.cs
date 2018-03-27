@@ -58,6 +58,8 @@ namespace ProgramadoraGet.Features.Skills
 
                 db.Skills.Add(skills);
 
+                user.Points += 10;
+
                 await db.SaveChangesAsync();
 
                 return new Domain.Skills{ UserId = skills.UserId, TagId = skills.TagId };

@@ -22,10 +22,6 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
             public string Period { get; set; }
 
-            public DateTime CreatedAt { get; set; }
-
-            public DateTime UpdatedAt { get; set; }
-
             public Guid UserId { get; set; }
         }
 
@@ -36,18 +32,20 @@ namespace ProgramadoraGet.Features.AcademicQualification
                 RuleFor(r => r.Course)
                    .NotEmpty().WithMessage("Curso não pode ser vazio")
                    .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
+
                 RuleFor(r => r.Institution)
                    .NotEmpty().WithMessage("Instituição não pode ser vazia")
                    .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
+
                 RuleFor(r => r.FinishedAt)
                    .NotEmpty().WithMessage("Data de término não pode ser vazia");
+
                 RuleFor(r => r.StartedAt)
                    .NotEmpty().WithMessage("Data de início não pode ser vazia");
+
                 RuleFor(r => r.Period)
                    .NotEmpty().WithMessage("Período não pode ser vazio")
                    .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
-                RuleFor(r => r.UserId)
-                   .NotEmpty().WithMessage("O id não pode ser vazio");
 
             }
         }
@@ -65,8 +63,12 @@ namespace ProgramadoraGet.Features.AcademicQualification
             {
                 if (model.StartedAt > model.FinishedAt) throw new Exception();
 
-                if (await db.Users.SingleOrDefaultAsync(s => s.Id == model.UserId) == null) throw new Exception();
-                
+                var user = await db.Users.FindAsync(model.UserId);
+
+                if (user == null) throw new Exception();
+                if (user.DeletedAt != null) throw new Exception();
+
+
                 var aq = new Domain.AcademicQualification
                 {
                     Course = model.Course,
@@ -78,6 +80,8 @@ namespace ProgramadoraGet.Features.AcademicQualification
                 };
                 
                 db.AcademicQualifications.Add(aq);
+
+                user.Points += 10;
 
                 await db.SaveChangesAsync();
 
