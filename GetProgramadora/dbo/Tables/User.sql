@@ -13,10 +13,13 @@
     [PasswordSalt]    NVARCHAR (MAX)   NOT NULL,
     [PhoneNumber]     NVARCHAR (14)    NULL,
     [Picture]         NVARCHAR (MAX)   NULL,
-    [State]           NVARCHAR (MAX)   NULL,
+    [Points]          INT              NOT NULL,
+    [State]           NVARCHAR (2)     NULL,
     [UpdatedAt]       DATETIME2 (7)    DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

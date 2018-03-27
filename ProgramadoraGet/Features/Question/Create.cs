@@ -79,6 +79,8 @@ namespace ProgramadoraGet.Features.Question
                 if (user == null) throw new Exception();
                 if (user != null && user.DeletedAt != null) throw new Exception();
 
+                user.Points += 10;
+
                 var question = new Domain.Question
                 {
                     Title = model.Title,

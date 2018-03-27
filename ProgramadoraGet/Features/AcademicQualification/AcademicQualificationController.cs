@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
 using ProgramadoraGet.Utils;
@@ -17,8 +19,8 @@ namespace ProgramadoraGet.Features.AcademicQualification
         {
             this.db = db;
         }
-
-        // TODO: update, read
+        
+        [Authorize]
         [HttpPost]
         public async Task<DefaultResponse<Domain.AcademicQualification>> Create ([FromBody]Create.Model model){
             var response = new DefaultResponse<Domain.AcademicQualification>();
@@ -31,6 +33,7 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
             var services = new Create.Services(db);
 
+            model.UserId = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
             response.data = await services.Save(model);
 
             return response;

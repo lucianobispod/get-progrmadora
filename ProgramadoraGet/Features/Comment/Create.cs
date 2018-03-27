@@ -26,9 +26,6 @@ namespace ProgramadoraGet.Features.Comment
                     .MaximumLength(200).WithMessage("Limite de caracteres ultrapassado")
                     .NotEmpty().WithMessage("Este campo não pode ser vazio");
 
-                //RuleFor(r => r.UserId)
-                //    .NotEmpty().WithMessage("Identificador de usuário não pode ser vazio");
-
                 RuleFor(r => r.QuestionId)
                     .NotEmpty().WithMessage("Identificador de Pergunta não pode ser vazio");
 
@@ -79,6 +76,7 @@ namespace ProgramadoraGet.Features.Comment
 
                 db.Comments.Add(comment);
 
+                user.Points += 10;
 
                 await db.SaveChangesAsync();
 

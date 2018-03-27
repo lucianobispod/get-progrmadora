@@ -43,6 +43,11 @@ namespace ProgramadoraGet.Domain
 
         public string Location { get; set; }
 
+        public int Points { get; set; }
+
+
+
+
         public bool IsPasswordEqualsTo(string password)
         {
             return Encrypt(password, this.PasswordSalt) == this.PasswordHash;
