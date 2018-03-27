@@ -48,6 +48,15 @@ namespace ProgramadoraGet.Features.Match
 
             await new Delete.Services(db).Trash(model);
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IList<Domain.Match>> ReadOne(Read.Model model)
+        {
+            model.EnterpriseId = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
+            return await new Read.Services(db).One(model);
+        }
+
         
     }
 }
