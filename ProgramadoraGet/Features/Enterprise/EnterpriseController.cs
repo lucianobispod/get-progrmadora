@@ -21,6 +21,7 @@ namespace ProgramadoraGet.Features.Enterprise
             this.db = db;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<DefaultResponse<Domain.Enterprise>> Create ([FromBody] Create.Model model)
         {
@@ -39,13 +40,14 @@ namespace ProgramadoraGet.Features.Enterprise
             return response;
         }
         
+        [Authorize]
         [HttpGet]
         public async Task<IList<Domain.Enterprise>>  ReadAll()
         {
             return await new Read.Services(db).All();
         }
 
-
+        [Authorize]
         [HttpGet("{Id}")]
         public async Task<IList<Domain.Enterprise>> ReadOne(Read.Model model)
         {
@@ -53,7 +55,8 @@ namespace ProgramadoraGet.Features.Enterprise
             return await new Read.Services(db).One(model);
         }
 
-        [HttpPut("{Id}")]
+        [Authorize]
+        [HttpPut]
         public async Task<DefaultResponse<Domain.Enterprise>> Update([FromBody]Update.Model model)
         {
             model.Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
@@ -71,10 +74,13 @@ namespace ProgramadoraGet.Features.Enterprise
             return response;
         }
 
+        [Authorize]
         [HttpDelete("{Id}")]
         public async Task<DateTime?> Delete(Delete.Model model)
         {
-            return await new Delete.Services(db).Trash(model);
+            //return await new Delete.Services(db).Trash(model);
+
+            return await new Delete.Services(db).Trash(new Delete.Model { Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });
         }
 
         [Authorize]
