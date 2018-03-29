@@ -151,6 +151,7 @@ namespace ProgramadoraGet.Features.Question
 
             public async Task<IList<QuestionDefault>> OneQuestion(Model model)
             {
+                if (model.Id == null) throw new HttpException(400, "Identificador de question vazio");
 
                 await db.Questions.FindAsync(model.Id);
 

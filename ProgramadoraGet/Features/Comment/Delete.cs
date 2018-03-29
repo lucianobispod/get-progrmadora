@@ -38,18 +38,18 @@ namespace ProgramadoraGet.Features.Comment
             {
                 var user = await db.Users.FindAsync(model.MeIdentifier);
 
-                if (user == null) throw new Exception();
+                if (user == null) throw new NotFoundException();
 
-                if (user != null && user.DeletedAt != null) throw new Exception();
+                if (user != null && user.DeletedAt != null) throw new NotFoundException();
 
                 var comment = await db.Comments.FindAsync(model.CommentId);
 
-                if (comment == null) throw new Exception();
+                if (comment == null) throw new HttpException(400, "Identificador de Comentário inválido");
 
                 if (comment != null && comment.DeletedAt != null)
                     return comment.DeletedAt;
 
-                if (comment.UserId != user.Id) throw new Exception("Você não pode apagar uma question que não é sua");
+                if (comment.UserId != user.Id) throw new ForbiddenException();
 
 
                 comment.DeletedAt = DateTime.Now;

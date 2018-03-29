@@ -27,7 +27,7 @@ namespace ProgramadoraGet.Features.Enterprise
             {
                 var enterprise = await db.Enterprises.FindAsync(model.Id);
 
-                if (enterprise == null) throw new Exception();
+                if (enterprise == null) throw new UnauthorizedException();
 
                 enterprise.DeletedAt = DateTime.Now;
 

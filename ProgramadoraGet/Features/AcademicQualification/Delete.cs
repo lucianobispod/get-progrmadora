@@ -25,11 +25,11 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
             public async Task Trash(Model model)
             {
-                var aq = await db.AcademicQualifications.FindAsync(model.Id);
+                var academicQualification = await db.AcademicQualifications.FindAsync(model.Id);
 
-                if (aq == null) throw new Exception();
+                if (academicQualification == null) throw new NotFoundException();
 
-                db.AcademicQualifications.Remove(aq);
+                db.AcademicQualifications.Remove(academicQualification);
 
                 await db.SaveChangesAsync();
 

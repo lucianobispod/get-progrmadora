@@ -27,7 +27,7 @@ namespace ProgramadoraGet.Features.Tag
 
             public async Task<IList<Domain.Tag>> One(Model model)
             {
-                if (model.Id == null) throw new Exception();
+                if (model.Id == null) throw new NotFoundException();
 
                 return await db.Tags
                      .Where(t => t.DeletedAt == null)
@@ -44,7 +44,7 @@ namespace ProgramadoraGet.Features.Tag
             public async Task<IList<Domain.Tag>> ByTagType(Model model)
             {
 
-                if (!Enum.IsDefined(typeof(Domain.TagType), model.TagType)) throw new Exception();
+                if (!Enum.IsDefined(typeof(Domain.TagType), model.TagType)) throw new ForbiddenException();
 
                 return await db.Tags
                      .Where(t => t.DeletedAt == null)

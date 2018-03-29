@@ -42,14 +42,14 @@ namespace ProgramadoraGet.Features.Question
 
                 var user = await db.Users.FindAsync(model.MeIdentifier);
 
-                if (user == null) throw new Exception();
+                if (user == null) throw new UnauthorizedException();
 
-                if (question == null) throw new Exception();
+                if (question == null) throw new NotFoundException();
 
                 if (question != null && question.DeletedAt != null)
                     return question.DeletedAt;
 
-                if (question.UserId != user.Id) throw new Exception("Você não pode apagar uma question que não é sua, pô se liga!");
+                if (question.UserId != user.Id) throw new ForbiddenException();
 
 
                 question.DeletedAt = DateTime.Now;

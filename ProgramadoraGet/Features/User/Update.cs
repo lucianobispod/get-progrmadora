@@ -87,7 +87,7 @@ namespace ProgramadoraGet.Features.User
             {
                 var user = await db.Users.FindAsync(model.Id);
 
-                if (user == null) throw new Exception();
+                if (user == null) throw new UnauthorizedException();
 
 
                 if (model.Name != null)
@@ -124,7 +124,7 @@ namespace ProgramadoraGet.Features.User
 
                 if (model.CurrentPassword != null && model.NewPassword != null)
 
-                    if (!user.IsPasswordEqualsTo(model.CurrentPassword)) throw new Exception();
+                    if (!user.IsPasswordEqualsTo(model.CurrentPassword)) throw new HttpException(400, "Senha inválida");
                     else user.SetPassword(model.NewPassword);
 
                 user.UpdatedAt = DateTime.Now;

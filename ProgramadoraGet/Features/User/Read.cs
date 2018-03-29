@@ -14,7 +14,7 @@ namespace ProgramadoraGet.Features.User
 
         public class Model
         {
-            public Guid Id { get; set; }
+            public Guid Identificador { get; set; }
 
         }
 
@@ -33,6 +33,7 @@ namespace ProgramadoraGet.Features.User
                      .Where(w => w.DeletedAt == null)
                      .Include(include => include.Skills)
                      .ThenInclude(include => include.Tag)
+                     .OrderByDescending(w => w.Points)
                      .Select(user => new Domain.User
                      {
                          Id = user.Id,
@@ -58,13 +59,36 @@ namespace ProgramadoraGet.Features.User
                      }).ToListAsync();
             }
 
+            public async Task<IList<Domain.User>> OnlySkill(Model model)
+            {
+                if (model.Identificador == null) throw new NotFoundException();
+
+                return await db.Skills
+                     .Include(include => include.User)
+                     .Where(w => w.TagId == model.Identificador)
+                     .Select(skills => new Domain.User
+                     {
+                         Id = skills.User.Id,
+                         Name = skills.User.Name,
+                         LastName = skills.User.LastName,
+                         Description = skills.User.Description,
+                         Email = skills.User.Email,
+                         Location = skills.User.Location,
+                         State = skills.User.State,
+                         PhoneNumber = skills.User.PhoneNumber,
+                         Picture = skills.User.Picture,
+                         CreatedAt = skills.User.CreatedAt,
+                         UpdatedAt = skills.User.UpdatedAt,
+                     }).ToListAsync();
+            }
+
             public async Task<IList<Domain.User>> One(Model model)
             {
-                if (model.Id == null) throw new Exception();
+                if (model.Identificador == null) throw new NotFoundException();
 
                 return await db.Users
                      .Where(w => w.DeletedAt == null)
-                     .Where(w => w.Id == model.Id)
+                     .Where(w => w.Id == model.Identificador)
                      .Include(include => include.Skills)
                      .ThenInclude(include => include.Tag)
                      .Select(user => new Domain.User

@@ -36,7 +36,7 @@ namespace ProgramadoraGet.Features.User
             {
                 var user = await db.Users.FindAsync(model.Id);
                 
-                if (user == null) throw new Exception();
+                if (user == null) throw new UnauthorizedException();
 
                 if (user != null && user.DeletedAt != null)
                     return user.DeletedAt;

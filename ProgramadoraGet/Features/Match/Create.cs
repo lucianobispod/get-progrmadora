@@ -39,8 +39,8 @@ namespace ProgramadoraGet.Features.Match
             {
                 var user = await db.Users.FindAsync(model.UserId);
 
-                if (user == null) throw new Exception();
-                if (user.DeletedAt != null) throw new Exception();
+                if (user == null) throw new HttpException(400, "Identificador vazio");
+                if (user.DeletedAt != null) throw new NotFoundException();
 
                 var enterprise = await db.Enterprises.FindAsync(model.EnterpriseId);
 

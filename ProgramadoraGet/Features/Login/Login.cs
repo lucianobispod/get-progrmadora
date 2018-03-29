@@ -65,12 +65,12 @@ namespace ProgramadoraGet.Features.Login
                 var enterprise = await db.Enterprises.SingleOrDefaultAsync(u => u.Email == model.Email);
 
 
-                if (enterprise == null && user == null) throw new Exception();
-                if (enterprise != null && user != null) throw new Exception();
+                if (enterprise == null && user == null) throw new NotFoundException();
+                if (enterprise != null && user != null) throw new ForbiddenException();
 
-                if (user != null && !user.IsPasswordEqualsTo(model.Password)) throw new Exception();
+                if (user != null && !user.IsPasswordEqualsTo(model.Password)) throw new HttpException(400, "Senha inválida ");
 
-                if (enterprise != null && !enterprise.IsPasswordEqualsTo(model.Password)) throw new Exception();
+                if (enterprise != null && !enterprise.IsPasswordEqualsTo(model.Password)) throw new HttpException(400, "Senha inválida ");
 
 
                 if (enterprise != null)

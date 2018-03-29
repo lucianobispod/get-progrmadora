@@ -41,9 +41,9 @@ namespace ProgramadoraGet.Features.Comment
             {
                 var comment = await db.Comments.FindAsync(model.CommentId);
 
-                if (comment == null) throw new Exception();
+                if (comment == null) throw new HttpException(400, "Identificador de Comentário inválido");
 
-                if (comment.DeletedAt != null) throw new Exception();
+                if (comment.DeletedAt != null) throw new NotFoundException();
 
                 comment.CommentText = model.CommentText;
                 comment.UpdatedAt = DateTime.Now;
