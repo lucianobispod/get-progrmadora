@@ -41,14 +41,14 @@ namespace ProgramadoraGet.Features.Skills
             {
                 var user = await db.Users.FindAsync(model.UserId);
 
-                if (user == null) throw new Exception();
-                if (user.DeletedAt != null) throw new Exception();
+                if (user == null) throw new UnauthorizedException();
+                if (user.DeletedAt != null) throw new NotFoundException();
 
                 var tag = await db.Tags.FindAsync(model.TagId);
 
-                if (tag == null) throw new Exception();
-                if (tag.DeletedAt != null) throw new Exception();
-                if (tag.TagType == Domain.TagType.Normal) throw new Exception();
+                if (tag == null) throw new HttpException(400, "Identificador vazio");
+                if (tag.DeletedAt != null) throw new NotFoundException();
+                if (tag.TagType == Domain.TagType.Normal) throw new HttpException(400, "Tag inválida");
 
                 var skills = new Domain.Skills
                 {

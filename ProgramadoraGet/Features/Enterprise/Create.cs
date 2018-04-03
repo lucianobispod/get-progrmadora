@@ -50,7 +50,7 @@ namespace ProgramadoraGet.Features.Enterprise
             public async Task<Domain.Enterprise> Save(Model model)
             {
 
-                if (await db.Enterprises.SingleOrDefaultAsync(s => s.Email == model.Email) != null) throw new Exception();
+                if (await db.Enterprises.SingleOrDefaultAsync(s => s.Email == model.Email) != null) throw new HttpException(400, "Email já cadastrado");
 
                 var enterprise = new Domain.Enterprise
                 {

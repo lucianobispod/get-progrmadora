@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using ProgramadoraGet.Infrastructure;
 using ProgramadoraGet.Utils;
 
@@ -20,10 +21,12 @@ namespace ProgramadoraGet.Features.User
     public class UserController : Controller
     {
         private Db db;
+        private IConfiguration configuration;
 
-        public UserController(Db db)
+        public UserController(Db db, IConfiguration configuration)
         {
             this.db = db;
+            this.configuration = configuration;
         }
 
         [AllowAnonymous]
@@ -46,6 +49,14 @@ namespace ProgramadoraGet.Features.User
         public async Task<IList<Domain.User>> ReadOne(Read.Model model)
         {
             return await new Read.Services(db).One(model);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("SearchSkills/{Identificador}")]
+        public async Task<IList<Domain.User>> SearchSkills(Read.Model model)
+        {
+            return await new Read.Services(db).OnlySkill(model);
         }
 
         [Authorize]
@@ -79,5 +90,13 @@ namespace ProgramadoraGet.Features.User
             return await new MyQuestions.Services(db).MyQuestions(new MyQuestions.Model {  Id = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value) });
         }
 
+
+        [HttpPost]
+        [Route("sendEmail")]
+        public async Task<SendEmail.Result> SendEmail([FromBody]SendEmail.Model model)
+        {
+            return await new SendEmail.Services(db,configuration).Send(model);
+
+        }
     }
 }

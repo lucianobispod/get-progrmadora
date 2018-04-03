@@ -60,7 +60,7 @@ namespace ProgramadoraGet.Features.User
             public async Task<Domain.User> Save(Model model)
             {
 
-                if (await db.Users.SingleOrDefaultAsync(s => s.Email == model.Email) != null) throw new Exception();
+                if (await db.Users.SingleOrDefaultAsync(s => s.Email == model.Email) != null) throw new HttpException(400, "Email já cadastrado");
 
                 var user = new Domain.User
                 {

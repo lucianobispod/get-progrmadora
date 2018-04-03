@@ -27,7 +27,7 @@ namespace ProgramadoraGet.Features.Match
 
             public async Task<IList<Domain.Match>> One(Model model)
             {
-                if (model.EnterpriseId == null) throw new Exception();
+                if (model.EnterpriseId == null) throw new HttpException(400);
 
                 return await db.Matches
                     .Where(w => w.EnterpriseId == model.EnterpriseId)

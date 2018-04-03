@@ -59,13 +59,13 @@ namespace ProgramadoraGet.Features.Comment
             {
                 var user = await db.Users.FindAsync(model.UserId);
 
-                if (user == null) throw new Exception();
-                if (user != null && user.DeletedAt != null) throw new Exception();
+                if (user == null) throw new NotFoundException();
+                if (user != null && user.DeletedAt != null) throw new NotFoundException();
 
                 var question = await db.Questions.FindAsync(model.QuestionId);
 
-                if (question == null) throw new Exception();
-                if (question != null && question.DeletedAt != null) throw new Exception();
+                if (question == null) throw new HttpException(400, "Identificador de Question inválido");
+                if (question != null && question.DeletedAt != null) throw new NotFoundException();
 
                 var comment = new Domain.Comment
                 {

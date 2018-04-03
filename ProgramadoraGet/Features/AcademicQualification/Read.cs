@@ -25,7 +25,7 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
             public async Task<IList<Domain.AcademicQualification>> One(Model model)
             {
-                if (model.Id == null) throw new Exception();
+                if (model.Id == null) throw new NotFoundException();
 
                 return await db.AcademicQualifications
                     .Where(w => w.Id == model.Id)

@@ -12,11 +12,17 @@ namespace ProgramadoraGet.Features.AcademicQualification
         public class Model
         {
             public Guid Id { get; set; }
+
             public string Course { get; set; }
+
             public string Institution { get; set; }
+
             public DateTime FinishedAt { get; set; }
+
             public DateTime StartedAt { get; set; }
+
             public string Period { get; set; }
+
             public Guid UserId { get; set; }
         }
 
@@ -27,16 +33,21 @@ namespace ProgramadoraGet.Features.AcademicQualification
                 RuleFor(r => r.Course)
                    .NotEmpty().WithMessage("Curso não pode ser vazio")
                    .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
+
                 RuleFor(r => r.Institution)
                    .NotEmpty().WithMessage("Instituição não pode ser vazia")
                    .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
+
                 RuleFor(r => r.FinishedAt)
                    .NotEmpty().WithMessage("Data de término não pode ser vazia");
+
                 RuleFor(r => r.StartedAt)
                    .NotEmpty().WithMessage("Data de início não pode ser vazia");
+
                 RuleFor(r => r.Period)
                    .NotEmpty().WithMessage("Período não pode ser vazio")
                    .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
+
                 RuleFor(r => r.UserId)
                    .NotEmpty().WithMessage("O id não pode ser vazio");
             }
@@ -55,8 +66,8 @@ namespace ProgramadoraGet.Features.AcademicQualification
             {
                 var aq = await db.AcademicQualifications.FindAsync(model.Id);
 
-                if (aq == null) throw new Exception();
-                if (aq.StartedAt > aq.FinishedAt) throw new Exception(); 
+                if (aq == null) throw new NotFoundException();
+                if (aq.StartedAt > aq.FinishedAt) throw new HttpException(400, "Erro na data de inicio e termino"); 
 
                 if (model.Course != null)
                     aq.Course = model.Course;

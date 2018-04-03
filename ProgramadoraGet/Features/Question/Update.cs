@@ -79,15 +79,15 @@ namespace ProgramadoraGet.Features.Question
             {
                 var user = await db.Users.FindAsync(model.UserIdentifier);
 
-                if (user == null) throw new Exception();
-                if (user != null && user.DeletedAt != null) throw new Exception();
+                if (user == null) throw new UnauthorizedException();
+                if (user != null && user.DeletedAt != null) throw new NotFoundException();
 
                 var question = await db.Questions.FindAsync(model.QuestionIdentifier);
 
-                if (question == null) throw new Exception();
-                if (question != null && question.DeletedAt != null) throw new Exception();
+                if (question == null) throw new HttpException(400, "Identificador de Question vazio");
+                if (question != null && question.DeletedAt != null) throw new NotFoundException();
 
-                if (question.UserId != model.UserIdentifier) throw new Exception();
+                if (question.UserId != model.UserIdentifier) throw new ForbiddenException();
 
 
                 question.Title = model.Title;
@@ -117,15 +117,15 @@ namespace ProgramadoraGet.Features.Question
                 {
                     var tagsDisyinct = model.Tags.Distinct();
 
-                    if (tagsDisyinct.Count() > 10) throw new Exception();
+                    if (tagsDisyinct.Count() > 10) throw new HttpException(400, "Limite de tags ultrapassado");
 
                     foreach (var item in tagsDisyinct)
                     {
 
                         var tag = await db.Tags.FindAsync(item);
 
-                        if (tag == null) throw new Exception();
-                        if (tag != null && tag.DeletedAt != null) throw new Exception();
+                        if (tag == null) throw new HttpException(400, "Identificador de tag inválido");
+                        if (tag != null && tag.DeletedAt != null) throw new NotFoundException();
 
 
                         var questiontagExists = await db.QuestionTags

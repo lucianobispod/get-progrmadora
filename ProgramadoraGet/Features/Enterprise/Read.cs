@@ -45,7 +45,7 @@ namespace ProgramadoraGet.Features.Enterprise
 
             public async Task<IList<Domain.Enterprise>> One(Model model)
             {
-                if (model.Id == null) throw new Exception();
+                if (model.Id == null) throw new HttpException(400, "Identificdor vazio");
 
                 return await db.Enterprises
                      .Where(e => e.DeletedAt == null)

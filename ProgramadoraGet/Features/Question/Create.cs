@@ -76,8 +76,8 @@ namespace ProgramadoraGet.Features.Question
             {
                 var user = await db.Users.FindAsync(model.UserId);
 
-                if (user == null) throw new Exception();
-                if (user != null && user.DeletedAt != null) throw new Exception();
+                if (user == null) throw new UnauthorizedException();
+                if (user != null && user.DeletedAt != null) throw new NotFoundException();
 
                 user.Points += 10;
 
@@ -97,7 +97,7 @@ namespace ProgramadoraGet.Features.Question
                 var tagsDisyinct = model.Tags
                       .Distinct();
 
-                if (tagsDisyinct.Count() > 10) throw new Exception();
+                if (tagsDisyinct.Count() > 10) throw new HttpException(400, "Limite de tag ultrapassado");
 
                 foreach (var item in tagsDisyinct)
                 {

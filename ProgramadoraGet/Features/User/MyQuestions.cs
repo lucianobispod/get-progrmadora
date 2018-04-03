@@ -98,6 +98,7 @@ namespace ProgramadoraGet.Features.User
 
             public async Task<IList<QuestionDefault>> MyQuestions(Model model)
             {
+                if (model.Id == null) throw new UnauthorizedException();
 
                 await db.Questions.FindAsync(model.Id);
 

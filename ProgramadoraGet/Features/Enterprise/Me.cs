@@ -35,7 +35,7 @@ namespace ProgramadoraGet.Features.Enterprise
             {
                 var enterprise = await db.Enterprises.FindAsync(model.Id);
 
-                if (enterprise == null) throw new Exception();
+                if (enterprise == null) throw new UnauthorizedException();
 
                 if (enterprise != null && enterprise.DeletedAt != null) throw new Exception();
 

@@ -45,7 +45,7 @@ namespace ProgramadoraGet.Features.Skills
                     s.UserId == model.UserId
                  && s.TagId == model.TagId);
 
-                if (skills == null) throw new Exception();
+                if (skills == null) throw new NotFoundException();
 
                  db.Skills.Remove(skills);
 

@@ -65,8 +65,8 @@ namespace ProgramadoraGet.Features.AcademicQualification
 
                 var user = await db.Users.FindAsync(model.UserId);
 
-                if (user == null) throw new Exception();
-                if (user.DeletedAt != null) throw new Exception();
+                if (user == null) throw new NotFoundException();
+                if (user.DeletedAt != null) throw new NotFoundException();
 
 
                 var aq = new Domain.AcademicQualification

@@ -75,7 +75,7 @@ namespace ProgramadoraGet.Features.Enterprise
             {
                 var enterprise = await db.Enterprises.FindAsync(model.Id);
 
-                if (enterprise == null) throw new Exception();
+                if (enterprise == null) throw new HttpException(400, "Identificador de empresa inválido");
 
 
                 if (model.Name != null)
@@ -105,7 +105,7 @@ namespace ProgramadoraGet.Features.Enterprise
                 if (model.CurrentPassword != null && model.NewPassword != null)
 
                     if (!enterprise.IsPasswordEqualsTo(model.CurrentPassword))
-                        throw new Exception();
+                        throw new HttpException(400, "Senha inválida");
                     else
                         enterprise.SetPassword(model.NewPassword);
 
