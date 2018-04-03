@@ -65,17 +65,22 @@ namespace ProgramadoraGet
                 c.CustomSchemaIds(x => x.FullName);
             });
 
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseAuthentication();
+
+            app.UseCors(builder => builder.WithOrigins("*").WithHeaders(""));
 
             app.UseSwagger();
 
@@ -85,7 +90,6 @@ namespace ProgramadoraGet
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseCors(builder => builder.WithOrigins("*").WithMethods("*"));
 
             app.UseMvc();
             app.Run(async (context) =>

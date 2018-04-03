@@ -25,7 +25,7 @@ namespace ProgramadoraGet.Features.Enterprise
             public Validator()
             {
                 RuleFor(validate => validate.Email)
-                    .Length(20, 100).WithMessage("Email deve conter de 20 a 100 caracteres")
+                    .Length(5, 100).WithMessage("Email deve conter de 5 a 100 caracteres")
                     .EmailAddress().WithMessage("Email inválido");
 
                 RuleFor(validate => validate.Password)
