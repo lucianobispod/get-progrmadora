@@ -22,7 +22,8 @@ namespace ProgramadoraGet.Features.Comment
             public Validator()
             {
                 RuleFor(validate => validate.CommentText)
-                     .MaximumLength(200).WithMessage("Email deve conter de 20 a 100 caracteres")
+                     .MaximumLength(200).WithMessage("Email deve conter de 
+                     a 100 caracteres")
                      .NotEmpty().WithMessage("Commentário não pode ser vazio");
             }
         }
