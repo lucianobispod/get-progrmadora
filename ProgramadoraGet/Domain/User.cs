@@ -45,7 +45,7 @@ namespace ProgramadoraGet.Domain
 
         public int Points { get; set; }
 
-
+        public string RFID { get; set; }
 
 
         public bool IsPasswordEqualsTo(string password)

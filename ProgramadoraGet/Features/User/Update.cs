@@ -34,6 +34,8 @@ namespace ProgramadoraGet.Features.User
 
             public string Picture { get; set; }
 
+            public string RFID { get; set; }
+
         }
 
         public class Validator : AbstractValidator<Model>
@@ -70,7 +72,13 @@ namespace ProgramadoraGet.Features.User
 
                 RuleFor(validate => validate.Description)
                     .MaximumLength(100).WithMessage("Limite de caracteres ultrapassado");
+
+
+                RuleFor(validate => validate.RFID)
+                    .MaximumLength(50).WithMessage("Limite de caracteres ultrapassado");
+
             }
+
         }
 
         public class Services
@@ -120,6 +128,10 @@ namespace ProgramadoraGet.Features.User
 
                 if (model.Email != null)
                     user.Email = model.Email;
+
+                if (model.RFID != null)
+                    user.RFID = model.RFID;
+
 
 
                 if (model.CurrentPassword != null && model.NewPassword != null)

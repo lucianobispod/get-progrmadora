@@ -159,6 +159,7 @@ namespace ProgramadoraGet.Infrastructure
             m.Entity<User>().Property(d => d.PhoneNumber).HasMaxLength(14);
             m.Entity<User>().Property(d => d.Email).HasMaxLength(70);
             m.Entity<User>().Property(d => d.Description).HasMaxLength(100);
+            m.Entity<User>().Property(d => d.RFID).HasMaxLength(50);
 
 
         }
