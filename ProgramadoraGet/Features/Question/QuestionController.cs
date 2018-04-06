@@ -29,12 +29,14 @@ namespace ProgramadoraGet.Features.Question
             return await new Create.Services(db).Save(model);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IList<Read.QuestionDefault>> ReadAllQuestions()
         {
             return await new Read.Services(db).AllQuestions();
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{Id}")]
         public async Task<IList<Read.QuestionDefault>> ReadOneQuestion(Read.Model model)

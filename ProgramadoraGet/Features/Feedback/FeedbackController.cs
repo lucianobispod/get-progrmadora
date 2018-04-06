@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
 
@@ -20,6 +21,7 @@ namespace ProgramadoraGet.Features.Feedback
             this.db = db;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<Domain.Feedback> Create([FromBody] Create.Model model)
         {

@@ -82,7 +82,7 @@ namespace ProgramadoraGet.Features.User
             return await new Update.Services(db).Save(model);
         }
 
-
+        [Authorize]
         [HttpGet]
         [Route("MyQuestions")]
         public async Task<IList<MyQuestions.QuestionDefault>> MyQuestions()
