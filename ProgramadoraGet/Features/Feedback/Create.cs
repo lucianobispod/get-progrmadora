@@ -44,6 +44,14 @@ namespace ProgramadoraGet.Features.Feedback
 
             public async Task<Domain.Feedback> Save(Model model)
             {
+                if (model.UserId == null) throw new UnauthorizedException();
+
+                var user = await db.Users.FindAsync(model.UserId);
+
+                if (user == null) throw new NotFoundException();
+
+                if (user.DeletedAt != null) throw new NotFoundException();
+
                 var feedback = new Domain.Feedback()
                 {
                     Title = model.Title,

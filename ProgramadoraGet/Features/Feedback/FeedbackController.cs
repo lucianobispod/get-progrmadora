@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProgramadoraGet.Infrastructure;
@@ -22,6 +23,7 @@ namespace ProgramadoraGet.Features.Feedback
         [HttpPost]
         public async Task<Domain.Feedback> Create([FromBody] Create.Model model)
         {
+            model.UserId = Guid.Parse(User.Claims.Where(c => c.Type == ClaimTypes.PrimarySid).FirstOrDefault().Value);
             return await new Create.Services(db).Save(model);
         }
 
