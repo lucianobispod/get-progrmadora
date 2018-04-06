@@ -20,9 +20,9 @@ namespace ProgramadoraGet.Features.Points
         }
 
         [HttpPost]
-        public void Post([FromBody] AddPoints.Model model)
+        public async Task<string> AddPoint([FromBody] AddPoints.Model model)
         {
-            new AddPoints.Services(db).SavePoints(model);
+           return await new AddPoints.Services(db).SavePoints(model);
         }
 
     }

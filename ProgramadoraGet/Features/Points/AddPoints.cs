@@ -23,15 +23,17 @@ namespace ProgramadoraGet.Features.Points
                 this.db = db;
             }
 
-            public async void SavePoints(Model model)
+            public async Task<string> SavePoints(Model model)
             {
-                var user = await db.Users.SingleOrDefaultAsync(where => where.RFID == model.RFID);
+                var user = await db.Users.FirstOrDefaultAsync(w => w.RFID.ToString().Equals(model.RFID.ToString()));
 
                 if (user == null) throw new HttpException(400, "Esse RFID não está atrelado a nenhum usuário");
 
                 user.Points += 50;
 
                await db.SaveChangesAsync();
+
+                return "Pontos do usuário "+ user.Points;
             }
         }
 
