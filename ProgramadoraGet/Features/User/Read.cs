@@ -47,6 +47,7 @@ namespace ProgramadoraGet.Features.User
                          Picture = user.Picture,
                          CreatedAt = user.CreatedAt,
                          UpdatedAt = user.UpdatedAt,
+                         Points = user.Points,
                          Skills = user.Skills.Where(w => w.Tag.DeletedAt == null).Select(skills => new Domain.Skills
                          {
                              Tag = new Domain.Tag
@@ -77,6 +78,7 @@ namespace ProgramadoraGet.Features.User
                          State = skills.User.State,
                          PhoneNumber = skills.User.PhoneNumber,
                          Picture = skills.User.Picture,
+                         Points = skills.User.Points,
                          CreatedAt = skills.User.CreatedAt,
                          UpdatedAt = skills.User.UpdatedAt,
                      }).ToListAsync();
@@ -102,6 +104,7 @@ namespace ProgramadoraGet.Features.User
                          State = user.State,
                          PhoneNumber = user.PhoneNumber,
                          Picture = user.Picture,
+                          Points = user.Points,
                          CreatedAt = user.CreatedAt,
                          UpdatedAt = user.UpdatedAt,
                          Skills = user.Skills.Where(w => w.Tag.DeletedAt == null).Select(skills => new Domain.Skills
